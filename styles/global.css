@@ -1,0 +1,53 @@
+/* Variables */
+
+body {
+	--color-main: #232224;
+	--color-accent: #ff752b;
+	--color-support: #bfc9c6;
+	--color-link: #ff752b;
+	--color-banner: #bfc9c6;
+	--color-background: #fbfaf8;
+	--font-body: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	--font-title: 'Bebas Neue', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+/* Styles */
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: var(--font-body);
+	background-color: var(--color-background);
+	color: var(--color-main);
+}
+
+/* Utility */
+
+.clearfix::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+/* Header */
+
+.main-header {
+	width: 100%;
+	padding: 20px;
+	margin-bottom: 30px;
+	background-color: var(--color-banner);
+}
+
+.main-header h1 {
+	font-size: 2.5em;
+	font-weight: bold;
+	text-align: center;
+}
+
+.content-wrap {
+	margin: 0 20px;
+}
