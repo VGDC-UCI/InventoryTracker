@@ -1,0 +1,80 @@
+/* Container */
+
+.controls {
+	background-color: var(--color-white);
+	box-shadow: 0 2px 2px #0003;
+	padding: 10px 60px 25px;
+	margin-bottom: 20px;
+}
+
+.control-header {
+	font-weight: bold;
+	margin-bottom: 7px;
+}
+
+/* Searchbar */
+
+.searchbar {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-bottom: 15px;
+}
+
+#searchbar {
+	display: block;
+	padding: 10px 10px;
+	border: var(--color-blue) 3.5px solid;
+	border-radius: 14px;
+}
+
+#searchbar:active,
+#searchbar:focus {
+	border: var(--color-dark) 3.5px solid;
+	outline-width: 0;
+}
+
+/* Tags */
+
+.tag-filter-list {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.controls .tag {
+	display: inline-block;
+	padding: 0.2em 0.6em;
+	background-color: var(--color-sky);
+	border-radius: 0.8em;
+}
+
+.controls label {
+	/* Safari */
+	-webkit-user-select: none;
+	/* IE 10 and IE 11 */
+	-ms-user-select: none;
+	/* Standard syntax */
+	user-select: none;
+}
+
+/* Desktop Reflow */
+
+@media screen and (min-width: 800px) {
+	.controls {
+		padding: 10px 30px 20px;
+	}
+	#controls {
+		display: flex;
+		justify-content: center;
+	}
+
+	.searchbar {
+		width: 35%;
+		margin: 0;
+		margin-right: 5%;
+	}
+
+	.tag-filter {
+		width: 60%;
+	}
+}

@@ -8,16 +8,51 @@
 
 	<link rel="stylesheet" href="styles/global.css">
 	<link rel="stylesheet" href="styles/card.css">
+	<link rel="stylesheet" href="styles/controls.css">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@700&family=Roboto&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css">
 </head>
 
 <body>
 	<header class="main-header">
-		<h1>VGDC Inventory Tracker</h1>
+		<div class="header-mobile">
+			<div class="logo-stack">
+				<img src="res/vgdc-logo-plain.png" alt="">
+				<p>VGDC</p>
+			</div>
+			<h1>Inventory<br>Tracker</h1>
+		</div>
+		<div class="header-desktop clearfix">
+			<div class="logo-span">
+				<img src="res/vgdc-logo-plain.png" alt="">
+				<h1>Inventory Tracker</h1>
+			</div>
+			<p>VGDC<br>Game Lab</p>
+		</div>
 	</header>
+
+	<section class="controls">
+		<form action="" id="controls">
+			<div class="searchbar">
+				<p class="control-header">Includes</p>
+				<input type="text" name="searchbar" id="searchbar">
+			</div>
+
+			<div class="tag-filter">
+				<p class="control-header">Tags</p>
+				<div class="tag-filter-list">
+					<div class="tag">
+						<input type="checkbox" name="one" id="tag-one">
+						<label for="tag-one">Tag One</label>
+					</div>
+				</div>
+			</div>
+		</form>
+	</section>
 
 	<div class="content-wrap">
 		<div id="database">

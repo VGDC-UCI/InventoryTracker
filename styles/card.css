@@ -11,11 +11,11 @@ body {
 	flex-direction: column;
 }
 
-@media screen and (min-width:600px) {
+@media screen and (min-width:800px) {
 	#database {
 		flex-direction: row;
 		flex-wrap: wrap;
-		justify-content: flex-start;
+		justify-content: space-evenly;
 		align-items: flex-start;
 	}
 }
