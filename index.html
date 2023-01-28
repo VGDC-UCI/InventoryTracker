@@ -7,121 +7,126 @@
 	<title>VGDC Item Tracker</title>
 
 	<link rel="stylesheet" href="styles/global.css">
-	<link rel="stylesheet" href="styles/layout-1.css">
+	<link rel="stylesheet" href="styles/card.css">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@700&family=Roboto&display=swap" rel="stylesheet">
 </head>
 
 <body>
 	<header class="main-header">
-		<h1>VGDC Item Tracker</h1>
+		<h1>VGDC Inventory Tracker</h1>
 	</header>
 
 	<div class="content-wrap">
 		<div id="database">
 
-			<article data-name="Settlers of Catan" data-tags="Board Game, Multiplayer">
+			<article class="item">
 				<header class="item-header">
 					<h1>Settlers of Catan</h1>
 				</header>
 
-				<section class="item-image">
-					<h2>Photo</h2>
-					<a href="./img-full/settlers-of-catan.jpg" target="_blank">
-						<img src="./img-thumb/settlers-of-catan.jpg" alt="Settlers of Catan">
-					</a>
-				</section>
+				<div class="item-wrap">
+					<section class="item-description">
+						<p>
+							Physical board game. Become the dominant force on the island of Catan by building settlements, cities, and
+							roads.
+						</p>
+					</section>
 
-				<section class="item-count">
-					<h2>Count</h2>
-					<p>1</p>
-				</section>
+					<section class="item-image">
+						<a href="./img-full/settlers-of-catan.jpg" target="_blank">
+							<img src="./img-thumb/settlers-of-catan.jpg" alt="Settlers of Catan">
+						</a>
+					</section>
 
-				<section class="item-tags">
-					<h2>Tags</h2>
-					<ul>
-						<li>Board Game</li>
-						<li>Multiplayer</li>
-					</ul>
-				</section>
+					<div class="item-metadata">
+						<section class="item-tags">
+							<ul>
+								<li>Good Condition</li>
+								<li>Board Game</li>
+								<li>Multiplayer</li>
+							</ul>
+						</section>
 
-				<section class="item-description">
-					<h2>Description</h2>
-					<p>
-						Physical board game. Become the dominant force on the island of Catan by building settlements, cities, and
-						roads.
-					</p>
-				</section>
+						<section class="item-count">
+							<p>1</p>
+						</section>
+					</div>
+				</div>
 			</article>
 
-			<article data-name="The Art of Game Design" data-tags="Book, Design">
+			<article class="item">
 				<header class="item-header">
 					<h1>The Art of Game Design</h1>
-					<p class="author">Jesse Schell</p>
+					<p>Jesse Schell</p>
 				</header>
 
-				<section class="item-image">
-					<h2>Photo</h2>
-					<a href="./img-full/the-art-of-game-design.jpg" target="_blank">
-						<img src="./img-thumb/the-art-of-game-design.jpg" alt="The Art of Game Design">
-					</a>
-				</section>
+				<div class="item-wrap">
+					<section class="item-description">
+						<p>
+							General purpose book on game design. Covers design from psychological, philosophical, and analytical
+							approaches through a set of lenses.
+						</p>
+					</section>
 
-				<section class="item-count">
-					<h2>Count</h2>
-					<p>2</p>
-				</section>
+					<section class="item-image">
+						<a href="./img-full/the-art-of-game-design.jpg" target="_blank">
+							<img src="./img-thumb/the-art-of-game-design.jpg" alt="The Art of Game Design">
+						</a>
+					</section>
 
-				<section class="item-tags">
-					<h2>Tags</h2>
-					<ul>
-						<li>Book</li>
-						<li>Design</li>
-					</ul>
-				</section>
+					<div class="item-metadata">
+						<section class="item-tags">
+							<ul>
+								<li>Good Condition</li>
+								<li>Book</li>
+								<li>Design</li>
+							</ul>
+						</section>
 
-				<section class="item-description">
-					<h2>Description</h2>
-					<p>
-						General purpose book on game design. Covers design from psychological, philosophical, and analytical
-						approaches through a set of lenses.
-					</p>
-				</section>
+						<section class="item-count">
+							<p>2</p>
+						</section>
+					</div>
+				</div>
+
+
 			</article>
 
-			<article data-name="Wired PS4 Controller" data-tags="Controller, Hardware">
+			<article class="item">
 				<header class="item-header">
 					<h1>Wired PS4 Controller</h1>
 				</header>
 
-				<section class="item-image">
-					<h2>Photo</h2>
-					<a href="./img-full/wired-ps4-controller.jpg" target="_blank">
-						<img src="./img-thumb/wired-ps4-controller.jpg" alt="Wired PS4 Controller">
-					</a>
-				</section>
+				<div class="item-wrap">
+					<section class="item-description">
+						<p>
+							Multicolored PS4 controllers with ability to connect to desktop via cable.
+						</p>
+					</section>
 
-				<section class="item-count">
-					<h2>Count</h2>
-					<p>4</p>
-				</section>
+					<section class="item-image">
+						<a href="./img-full/wired-ps4-controller.jpg" target="_blank">
+							<img src="./img-thumb/wired-ps4-controller.jpg" alt="Wired PS4 Controller">
+						</a>
+					</section>
 
-				<section class="item-tags">
-					<h2>Tags</h2>
-					<ul>
-						<li>Controller</li>
-						<li>Hardware</li>
-					</ul>
-				</section>
+					<div class="item-metadata">
+						<section class="item-tags">
+							<ul>
+								<li>Poor Condition</li>
+								<li>Controller</li>
+								<li>Hardware</li>
+							</ul>
+						</section>
 
-				<section class="item-description">
-					<h2>Description</h2>
-					<p>
-						Multicolored PS4 controllers with ability to connect to desktop via cable.
-					</p>
-				</section>
+						<section class="item-count">
+							<p>4</p>
+						</section>
+					</div>
+				</div>
 			</article>
 
 		</div>
