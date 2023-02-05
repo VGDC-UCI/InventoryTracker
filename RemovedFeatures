@@ -1,0 +1,10 @@
+// Asking user via pop up prompt for an integer
+// Prompt asked in getData() function in sheetAPI.js
+// The user input is used to set the range for the Google Sheets API call
+var endRange = 0;
+while (!Number.isInteger(endRange) || endRange <= 0 || endRange > 100000) {
+    endRange = prompt("Please enter how many rows of data to parse: ");
+    endRange = parseInt(endRange);
+}
+var userRange = 'A2:I' + (endRange + 1);
+console.log(userRange);
