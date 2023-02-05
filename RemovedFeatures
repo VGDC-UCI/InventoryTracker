@@ -1,3 +1,5 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Asking user via pop up prompt for an integer
 // Prompt asked in getData() function in sheetAPI.js
 // The user input is used to set the range for the Google Sheets API call
@@ -8,3 +10,21 @@ while (!Number.isInteger(endRange) || endRange <= 0 || endRange > 100000) {
 }
 var userRange = 'A2:I' + (endRange + 1);
 console.log(userRange);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+foundFirst = false;
+
+// Scroll to first item that is still visible
+for (let i = 0; i < LIST_OF_ITEMS.length; ++i) {
+    // if (document.getElementsByClassName('item')[i].style.visibility == 'visible') {
+    if (document.getElementsByClassName('item')[i].style.display != 'none') {
+        COUNTER++;
+        if (!foundFirst) {
+            (document.getElementsByClassName('item')[i]).scrollIntoView({block: 'start', block: 'center'});
+            foundFirst = true; // Get rid of all traces of foundFirst and the if check, but leave above code if you want scroll to last item found
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
