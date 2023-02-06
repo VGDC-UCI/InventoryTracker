@@ -14,6 +14,7 @@ const RANGE = 'A2:I1000000';
 var LIST_OF_ITEMS = [];
 var CHECKED_TAGS_SET = new Set();
 var TAGS_SET = new Set();
+var TAGS_LIST = [];
 var COUNTER = -1;
 
 /**
@@ -168,12 +169,12 @@ function loadData(list_of_items) {
 
             // TODO: enums and other constants implementations
             try {
-                TAGS_SET.add("Poor Condition");
+                TAGS_SET.add("Poor Condition"); // Remove this line and add tag straight to search bar
                 TAGS_SET.add("Good Condition");
                 TAGS_SET.add("Unopened");
                 var listOfTags = new Set(list_of_items[i][4].split(", "));
                 for (specificTag of listOfTags.values()) {
-                    TAGS_SET.add(specificTag);
+                    TAGS_LIST.push(specificTag); 
                     var currentTag = document.createElement("li");
                     var currentTagText = document.createTextNode(specificTag);
                     currentTag.appendChild(currentTagText);
@@ -215,6 +216,10 @@ function loadData(list_of_items) {
     }
     // Load Tags To Search Bar
     // To place items underneath <div id="database">
+    TAGS_LIST.sort();
+    TAGS_LIST.forEach(tagInList => TAGS_SET.add(tagInList));
+    TAGS_LIST = null;
+
     var searchTagsLocation = document.getElementsByClassName("tag-filter-list")[0];
     for (specificTag of TAGS_SET.values()) {
         var currentTag = document.createElement("div");
