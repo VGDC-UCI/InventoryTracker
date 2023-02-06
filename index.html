@@ -82,7 +82,7 @@
 			
 			<div class="searchbar">
 				<p class="control-header">Includes</p>
-				<input type="text" name="searchbar" id="searchbar" onkeyup="search()">
+				<input type="text" name="searchbar" id="searchbar" onkeyup="search()" onkeydown="return (event.keyCode!=13);">
 			</div>
 
 			<div class="tag-filter">
