@@ -14,7 +14,6 @@ const RANGE = 'A2:I1000000';
 var LIST_OF_ITEMS = [];
 var CHECKED_TAGS_SET = new Set();
 var TAGS_SET = new Set();
-var TAGS_LIST = [];
 var COUNTER = -1;
 
 /**
@@ -67,6 +66,7 @@ function checkTagsOfItem(currentItemTags) {
 function loadData(list_of_items) {
     console.log("LOADING DATA");
     COUNTER = 0;
+    var tags_list = [];
     for (let i = 0; i < list_of_items.length; i++) {
         /*
         0:      Name                "Name"                          Note: Self-explanatory
@@ -128,12 +128,12 @@ function loadData(list_of_items) {
 
             // Load item-image full-res
             var image = document.createElement("a");
-            image.href = list_of_items[i][1]; // TODO: URL for image
+            image.href = list_of_items[i][1];
             image.target = "_blank";
 
             // Load item-image thumbnail
             var imageThumbnail = document.createElement("img");
-            imageThumbnail.src = list_of_items[i][1]; // TODO: URL for thumbnail
+            imageThumbnail.src = list_of_items[i][1];
             imageThumbnail.alt = list_of_items[i][0];
             image.appendChild(imageThumbnail);
             
@@ -169,12 +169,12 @@ function loadData(list_of_items) {
 
             // TODO: enums and other constants implementations
             try {
-                TAGS_SET.add("Poor Condition"); // Remove this line and add tag straight to search bar
+                TAGS_SET.add("Poor Condition");
                 TAGS_SET.add("Good Condition");
                 TAGS_SET.add("Unopened");
                 var listOfTags = new Set(list_of_items[i][4].split(", "));
                 for (specificTag of listOfTags.values()) {
-                    TAGS_LIST.push(specificTag); 
+                    tags_list.push(specificTag); 
                     var currentTag = document.createElement("li");
                     var currentTagText = document.createTextNode(specificTag);
                     currentTag.appendChild(currentTagText);
@@ -216,9 +216,8 @@ function loadData(list_of_items) {
     }
     // Load Tags To Search Bar
     // To place items underneath <div id="database">
-    TAGS_LIST.sort();
-    TAGS_LIST.forEach(tagInList => TAGS_SET.add(tagInList));
-    TAGS_LIST = null;
+    tags_list.sort();
+    tags_list.forEach(tagInList => TAGS_SET.add(tagInList));
 
     var searchTagsLocation = document.getElementsByClassName("tag-filter-list")[0];
     for (specificTag of TAGS_SET.values()) {
