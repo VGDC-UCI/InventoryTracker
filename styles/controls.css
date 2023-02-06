@@ -5,6 +5,8 @@
 	box-shadow: 0 2px 2px #0003;
 	padding: 10px 60px 25px;
 	margin-bottom: 20px;
+	position: sticky;
+	top: 60px;
 }
 
 .control-header {
@@ -17,13 +19,13 @@
 .searchbar {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: right;
 	margin-bottom: 15px;
 }
 
 #searchbar {
 	display: block;
-	padding: 10px 10px;
+	padding: 15px 10px;
 	border: var(--color-blue) 3.5px solid;
 	border-radius: 14px;
 }
@@ -65,16 +67,28 @@
 	}
 	#controls {
 		display: flex;
-		justify-content: center;
+		justify-content: left;
+	}
+
+	.total-count {
+		width: 0%;
+		margin-right: 69px;
+		margin-top: 30px;
 	}
 
 	.searchbar {
-		width: 35%;
-		margin: 0;
+		width: 25%;
+		margin: 5;
 		margin-right: 5%;
 	}
 
 	.tag-filter {
 		width: 60%;
+		margin-left: 1px;
+	}
+
+	.tag-filter-list{
+		grid-auto-flow: column;
+		grid-column-gap: 4px;
 	}
 }
