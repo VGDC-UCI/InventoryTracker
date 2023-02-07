@@ -59,11 +59,82 @@ function checkTagsOfItem(currentItemTags) {
     return true;
 }
 
+function getItemAsHtml(item) {
+    function wrapIfExists(text, start, end) {
+        if (text) {
+            return start + text + end;
+        } else {
+            return "";
+        }
+    }
+
+    const CONDITION_TEXT = {
+        1: "Poor Condition",
+        2: "Good Condition",
+        3: "Unopened",
+    };
+
+    const title = item.title;
+    const subtitle = wrapIfExists(item.subtitle, "<p>", "</p>");
+
+    const description = description;
+
+    const imgPathFull = item.imagePath;
+    const imgPathShort = item.imagePath;
+
+    const tagsHtml = (() => {
+        const o = [];
+        o.push(wrapIfExists(
+            CONDITION_TEXT[item.condition]
+        ));
+        o.push(
+            Array.from(item.tags.keys())
+                .map(x => `<li>${x}</li>`)
+                .sort()
+        );
+    })();
+
+    const count = item.count;
+
+    return `
+<article class="item">
+  <header class="item-header">
+    <h1>${title}</h1>
+    ${subtitle}
+  </header>
+
+  <div class="item-wrap">
+    <section class="item-description">
+      <p>${description}</p>
+    </section>
+
+    <section class="item-image">
+      <a href="${imgPathFull}" target="_blank">
+        <img src="${imgPathShort}" alt="${title}">
+      </a>
+    </section>
+
+    <div class="item-metadata">
+      <section class="item-tags">
+        <ul>${tagsHtml}</ul>
+      </section>
+
+      <section class="item-count">
+        <p>${count}</p>
+      </section>
+    </div>
+  </div>
+</article>
+    `.trim();
+}
 
 /**
  * Adds a new card to html
  */
 function loadData(list_of_items) {
+
+    // TODO [HIGH PRIORITY]: Rewrite this function to be modular. See Discord for details.
+
     console.log("LOADING DATA");
     COUNTER = 0;
     var tags_list = [];
@@ -81,7 +152,7 @@ function loadData(list_of_items) {
          */
 
         // TODO: Implement helper functions for clean and modular code
-        if (typeof(list_of_items[i][0]) !== "undefined" && list_of_items[i][0].length > 0) {
+        if (typeof (list_of_items[i][0]) !== "undefined" && list_of_items[i][0].length > 0) {
             COUNTER++;
 
             // To place items underneath <div id="database">
@@ -118,7 +189,7 @@ function loadData(list_of_items) {
                 itemDescriptionTextParagraph.appendChild(itemDescriptionText);
                 itemDescription.appendChild(itemDescriptionTextParagraph);
             }
-            catch(err) {
+            catch (err) {
                 console.log("Missing item description");
             }
 
@@ -136,7 +207,7 @@ function loadData(list_of_items) {
             imageThumbnail.src = list_of_items[i][1];
             imageThumbnail.alt = list_of_items[i][0];
             image.appendChild(imageThumbnail);
-            
+
             // Make <div class="item-metadata">
             var itemMetadata = document.createElement("div");
             itemMetadata.className = "item-metadata";
@@ -163,7 +234,7 @@ function loadData(list_of_items) {
                 }
                 tagsUnorderedList.appendChild(conditionTag);
             }
-            catch(err) {
+            catch (err) {
                 console.log("Missing item condition");
             }
 
@@ -174,7 +245,7 @@ function loadData(list_of_items) {
                 TAGS_SET.add("Unopened");
                 var listOfTags = new Set(list_of_items[i][4].split(", "));
                 for (specificTag of listOfTags.values()) {
-                    tags_list.push(specificTag); 
+                    tags_list.push(specificTag);
                     var currentTag = document.createElement("li");
                     var currentTagText = document.createTextNode(specificTag);
                     currentTag.appendChild(currentTagText);
@@ -182,7 +253,7 @@ function loadData(list_of_items) {
                 }
                 itemTag.appendChild(tagsUnorderedList);
             }
-            catch(err) {
+            catch (err) {
                 console.log("Missing item tags");
             }
 
@@ -198,7 +269,7 @@ function loadData(list_of_items) {
                 itemCountParagraph.appendChild(itemCountNumber);
                 itemCount.appendChild(itemCountParagraph);
             }
-            catch(err) {
+            catch (err) {
                 console.log("Missing item count");
             }
 
@@ -225,7 +296,7 @@ function loadData(list_of_items) {
         currentTag.className = "tag";
         var tagType = document.createElement("input");
         tagType.type = "checkbox";
-        tagType.onchange = modifyCheckedTagList.bind(this); 
+        tagType.onchange = modifyCheckedTagList.bind(this);
         tagType.name = specificTag;
         tagType.id = "tag-" + specificTag;
         currentTag.appendChild(tagType);
