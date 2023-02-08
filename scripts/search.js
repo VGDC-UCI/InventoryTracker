@@ -29,3 +29,19 @@ function search() {
 	}
 	document.getElementsByClassName("total-count-number")[0].textContent = COUNTER;
 }
+
+window.onkeyup = function (e) {
+	if (e.key == "Escape") {
+		window.scrollTo(0, 0);
+
+		const activeFilters = $("#controls input:checkbox:checked");
+		activeFilters.prop("checked", false)
+		activeFilters.trigger("change");
+
+		const searchbar = $("#searchbar");
+		searchbar.val("");
+		searchbar.focus();
+
+		search();
+	}
+}
