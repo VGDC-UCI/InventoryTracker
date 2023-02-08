@@ -308,6 +308,7 @@ function loadData(list_of_items) {
         searchTagsLocation.appendChild(currentTag);
     }
     document.getElementsByClassName("total-count-number")[0].textContent = COUNTER;
+	$(`#content-tooltip p`).text(`${COUNTER} result${COUNTER != 1 ? "s" : ""}`);
     console.log("FINISHED LOADING DATA");
 }
 
