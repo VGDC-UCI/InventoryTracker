@@ -114,3 +114,14 @@
 		grid-column-gap: 4px;
 	}
 }
+
+/* Tooltip After Search Results */
+
+#content-tooltip {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 20px auto 40px;
+	text-align: center;
+	color: #949494;
+}
