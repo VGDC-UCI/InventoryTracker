@@ -17,7 +17,8 @@
 	<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css">
 
 	<script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-	<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+		integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 
 	<script src="scripts/sheetsApi.js"></script>
 	<script src="scripts/search.js"></script>
@@ -41,11 +42,11 @@
 		</div>
 	</header>
 
-	<section class="controls">
-		<form action="" id="controls">
+	<section class="controls-area">
+		<form action="" id="controls" class="controls">
 			<div class="searchbar">
 				<p class="control-header">Includes</p>
-				<input type="text" name="searchbar" id="searchbar" onkeyup="search()" onkeydown="return (event.keyCode!=13);">
+				<input type="text" name="searchbar" id="searchbar" oninput="search()" onkeydown="return (event.keyCode!=13);">
 			</div>
 
 			<div class="tag-filter">
@@ -59,15 +60,10 @@
 				<p class="control-header">Total</p>
 				<p class="total-count-number"></p>
 			</div>
-
 		</form>
 	</section>
 
-	<div class="scroll-to-top-container">
-		<button type="button" id="scroll-to-top" title="Return to top">
-			<i class="fa-solid fa-arrow-up"></i>
-		</button>
-	</div>
+	<div class="scroll-to-top-handle" onclick="window.scrollTo(0, 0)"></div>
 
 	<div class="content-wrap">
 		<div id="database">
