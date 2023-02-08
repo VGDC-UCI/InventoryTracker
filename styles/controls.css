@@ -2,10 +2,7 @@
 
 .controls {
 	background-color: var(--color-white);
-	box-shadow: 0 2px 2px #0003;
-	padding: 10px 60px 25px;
-	margin-bottom: 20px;
-	top: 60px;
+	padding: 10px 60px 5px;
 }
 
 .control-header {
@@ -13,10 +10,13 @@
 	margin-bottom: 7px;
 }
 
-@media screen and (min-width: 800px) {
-	/* .controls {
-		position: sticky;
-	} */
+.scroll-to-top-handle {
+	position: sticky;
+	top: 0;
+	height: 20px;
+	margin-bottom: 20px;
+	background-color: var(--color-white);
+	box-shadow: 0 2px 2px #0003;
 }
 
 /* Searchbar */
@@ -112,51 +112,5 @@
 	.tag-filter-list {
 		grid-auto-flow: column;
 		grid-column-gap: 4px;
-	}
-}
-
-/* Scroll to Top */
-
-.scroll-to-top-container {
-	height: 0;
-	width: 60px;
-	position: sticky;
-	margin: 0 10px 0 auto;
-	top: 10px;
-	right: 10px;
-}
-
-#scroll-to-top {
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 2.4em;
-	color: var(--color-sky);
-	background-color: var(--color-white);
-	border: var(--color-sky) .13em solid;
-	box-shadow: 0 0 3px #0006;
-}
-
-#scroll-to-top:hover {
-	background-color: var(--color-sky);
-	color: var(--color-white);
-	border: none;
-}
-
-#scroll-to-top:active {
-	background-color: var(--color-blue);
-	box-shadow: 0 0 3px #000c;
-	color: var(--color-white);
-	border: none;
-}
-
-@media screen and (min-width: 800px) {
-	#scroll-to-top {
-		width: 50px;
-		height: 50px;
-		font-size: 1.6em;
 	}
 }
