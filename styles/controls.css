@@ -5,13 +5,18 @@
 	box-shadow: 0 2px 2px #0003;
 	padding: 10px 60px 25px;
 	margin-bottom: 20px;
-	position: sticky;
 	top: 60px;
 }
 
 .control-header {
 	font-weight: bold;
 	margin-bottom: 7px;
+}
+
+@media screen and (min-width: 800px) {
+	/* .controls {
+		position: sticky;
+	} */
 }
 
 /* Searchbar */
@@ -41,13 +46,20 @@
 .tag-filter-list {
 	display: flex;
 	flex-wrap: wrap;
+	margin-bottom: 15px;
 }
 
 .controls .tag {
 	display: inline-block;
-	padding: 0.2em 0.6em;
+	padding: 0.32em 0.65em;
+	margin: 0.2em;
 	background-color: var(--color-sky);
 	border-radius: 0.8em;
+}
+
+.controls .tag.selected {
+	background-color: var(--color-dark);
+	color: var(--color-white);
 }
 
 .controls label {
@@ -63,32 +75,88 @@
 
 @media screen and (min-width: 800px) {
 	.controls {
-		padding: 10px 30px 20px;
-	}
-	#controls {
-		display: flex;
-		justify-content: left;
+		padding: 10px 30px 0;
 	}
 
-	.total-count {
-		width: 0%;
-		margin-right: 69px;
-		margin-top: 30px;
+	#controls {
+		display: grid;
+		gap: 20px;
+		grid-template-columns: 60% 20%;
+		grid-template-rows: 80px auto;
+		align-items: flex-start;
+		justify-content: center;
+	}
+
+	#controls > * {
+		margin: 0;
 	}
 
 	.searchbar {
-		width: 25%;
-		margin: 5;
-		margin-right: 5%;
+		grid-column: 1 / span 1;
+		grid-row: 1 / span 1;
 	}
+
+	.total-count {
+		grid-column: 2 / span 1;
+		grid-row: 1 / span 1;
+		justify-self: center;
+	}
+
 
 	.tag-filter {
-		width: 60%;
-		margin-left: 1px;
+		grid-column: 1 / span 2;
+		grid-row: 2 / span 1;
+		margin: 0;
 	}
 
-	.tag-filter-list{
+	.tag-filter-list {
 		grid-auto-flow: column;
 		grid-column-gap: 4px;
+	}
+}
+
+/* Scroll to Top */
+
+.scroll-to-top-container {
+	height: 0;
+	width: 60px;
+	position: sticky;
+	margin: 0 10px 0 auto;
+	top: 10px;
+	right: 10px;
+}
+
+#scroll-to-top {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 2.4em;
+	color: var(--color-sky);
+	background-color: var(--color-white);
+	border: var(--color-sky) .13em solid;
+	box-shadow: 0 0 3px #0006;
+}
+
+#scroll-to-top:hover {
+	background-color: var(--color-sky);
+	color: var(--color-white);
+	border: none;
+}
+
+#scroll-to-top:active {
+	background-color: var(--color-blue);
+	box-shadow: 0 0 3px #000c;
+	color: var(--color-white);
+	border: none;
+}
+
+@media screen and (min-width: 800px) {
+	#scroll-to-top {
+		width: 50px;
+		height: 50px;
+		font-size: 1.6em;
 	}
 }

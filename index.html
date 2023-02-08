@@ -14,45 +14,13 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@700&family=Roboto&display=swap" rel="stylesheet">
 
-  	<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css">
+	<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css">
 
-	<script src="sheetsApi.js" type="text/javascript"></script>
-
-	<!-- Import Google API Client -->
 	<script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-	<script>
-		function search() {
-			console.log("Searching...");
-			var input = document.getElementById("searchbar");
-			var filter = input.value.toLowerCase();
-			var newList = [];
+	<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 
-			// Case-insensitive searching
-			for (let i = 0; i < LIST_OF_ITEMS.length; ++i) {
-				if (typeof(LIST_OF_ITEMS[i][0]) === "undefined" || typeof(document.getElementsByClassName('item-tags')[i]) === "undefined") {
-					continue;
-				}
-
-				if (LIST_OF_ITEMS[i][0].toLowerCase().includes(filter) && checkTagsOfItem(document.getElementsByClassName('item-tags')[i].getElementsByTagName('li'))) {
-					document.getElementsByClassName('item')[i].style.display = 'unset';
-				} else {
-					document.getElementsByClassName('item')[i].style.display = 'none';
-				}
-			}
-			COUNTER = 0;
-			// Get accurate Total Count currently shown on website
-			for (let i = 0; i < LIST_OF_ITEMS.length; ++i) {
-				if (typeof(document.getElementsByClassName('item')[i]) === "undefined") {
-					continue;
-				}
-
-				if (document.getElementsByClassName('item')[i].style.display != 'none') {
-					COUNTER++;
-				}
-			}
-			document.getElementsByClassName("total-count-number")[0].textContent = COUNTER;
-		}
-	</script>
+	<script src="scripts/sheetsApi.js"></script>
+	<script src="scripts/search.js"></script>
 </head>
 
 <body>
@@ -75,14 +43,9 @@
 
 	<section class="controls">
 		<form action="" id="controls">
-			<div class="total-count">
-				<p class="control-header">Total</p>
-				<p class="total-count-number">-1</p>
-			</div>
-			
 			<div class="searchbar">
 				<p class="control-header">Includes</p>
-				<input type="text" name="searchbar" id="searchbar" onkeyup="search()">
+				<input type="text" name="searchbar" id="searchbar" onkeyup="search()" onkeydown="return (event.keyCode!=13);">
 			</div>
 
 			<div class="tag-filter">
@@ -91,8 +54,20 @@
 					<!-- Tags for search purposes -->
 				</div>
 			</div>
+
+			<div class="total-count">
+				<p class="control-header">Total</p>
+				<p class="total-count-number"></p>
+			</div>
+
 		</form>
 	</section>
+
+	<div class="scroll-to-top-container">
+		<button type="button" id="scroll-to-top" title="Return to top">
+			<i class="fa-solid fa-arrow-up"></i>
+		</button>
+	</div>
 
 	<div class="content-wrap">
 		<div id="database">
