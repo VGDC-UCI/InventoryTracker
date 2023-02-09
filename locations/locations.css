@@ -1,6 +1,29 @@
-/* Database */
+/* Header */
 
-#database {
+.page-title {
+	background-color: var(--color-white);
+	color: var(--color-black);
+	box-shadow: var(--box-shadow-soft);
+	padding: 10px 0;
+	margin-bottom: 35px;
+}
+
+.page-title h2 {
+	text-align: center;
+	font-family: var(--font-title);
+	font-size: 1.4em;
+}
+
+@media screen and (min-width: 800px) {
+	.page-title h2 {
+		text-align: left;
+		margin-left: 20px;
+	}
+}
+
+/* Map List */
+
+#map-list {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
@@ -8,7 +31,7 @@
 }
 
 @media screen and (min-width:800px) {
-	#database {
+	#map-list {
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: space-evenly;
@@ -16,7 +39,7 @@
 	}
 }
 
-/* Item */
+/* Card */
 
 .item {
 	margin: 10px;
@@ -27,11 +50,7 @@
 }
 
 .item-wrap {
-	margin: 0 20px 7px;
-}
-
-.item-wrap section {
-	margin: 10px 0;
+	margin: 20px;
 }
 
 /* Header */
@@ -48,51 +67,20 @@
 	font-family: var(--font-title);
 }
 
-.item-header p {
-	margin-top: 0.5em;
-	font-size: 1.1em;
-	color: #c3c3c3;
+/* Contents */
+
+.item-image img {
+	width: 100%;
+	border-radius: 10px;
+	margin-bottom: 10px;
 }
 
 .item-description p {
 	line-height: 1.4;
 }
 
-.item-image img {
-	width: 100%;
-	border-radius: 10px;
-}
+/* Highlight */
 
-/* Metadata */
-
-.item-metadata {
-	display: flex;
-}
-
-.item-tags ul {
-	list-style-type: none;
-	margin-top: -1.2em;
-	flex: 90%;
-}
-
-.item-tags li {
-	display: inline-block;
-	padding: 0.2em 0.7em;
-	background-color: var(--color-sky);
-	border-radius: .8em;
-	margin: .6em 0.2em 0 0;
-}
-
-/* Count */
-
-.item-count {
-	flex: 10%;
-	text-align: right;
-	align-self: flex-end;
-	font-weight: bold;
-	color: var(--color-dark);
-}
-
-.item-count p::before {
-	content: "x";
+.item.highlight {
+	box-shadow: 0 0 5px #0066ff;
 }

@@ -16,7 +16,7 @@
 	height: 20px;
 	margin-bottom: 20px;
 	background-color: var(--color-white);
-	box-shadow: 0 2px 2px #0003;
+	box-shadow: var(--box-shadow-soft);
 }
 
 /* Searchbar */
