@@ -8,6 +8,7 @@ body {
 	--color-blue: #8bb0f9;
 	--font-body: Roboto, sans-serif;
 	--font-title: Mulish, sans-serif;
+	--box-shadow-soft: 0 2px 2px #0003;
 }
 
 /* Styles */
@@ -20,7 +21,7 @@ body {
 
 body {
 	font-family: var(--font-body);
-	background-color: var(--color-background);
+	background-color: #e2e2e2;
 	color: var(--color-main);
 }
 
