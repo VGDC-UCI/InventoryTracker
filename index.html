@@ -14,12 +14,14 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@700&family=Roboto&display=swap" rel="stylesheet">
 
-  	<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css">
+	<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css">
 
-	<script src="sheetsApi.js"></script>
-
-	<!-- Import Google API Client -->
 	<script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+	<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+		integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+	<script src="scripts/sheetsApi.js"></script>
+	<script src="scripts/search.js"></script>
 </head>
 
 <body>
@@ -40,138 +42,38 @@
 		</div>
 	</header>
 
-	<section class="controls">
-		<form action="" id="controls">
+	<section class="controls-area">
+		<form action="" id="controls" class="controls">
 			<div class="searchbar">
 				<p class="control-header">Includes</p>
-				<input type="text" name="searchbar" id="searchbar">
+				<input type="text" name="searchbar" id="searchbar" oninput="search()" onkeydown="return (event.keyCode!=13);">
 			</div>
 
 			<div class="tag-filter">
 				<p class="control-header">Tags</p>
 				<div class="tag-filter-list">
-					<div class="tag">
-						<input type="checkbox" name="one" id="tag-one">
-						<label for="tag-one">Tag One</label>
-					</div>
+					<!-- Tags for search purposes -->
 				</div>
+			</div>
+
+			<div class="total-count">
+				<p class="control-header">Total</p>
+				<p class="total-count-number"></p>
 			</div>
 		</form>
 	</section>
 
+	<div class="scroll-to-top-handle" onclick="window.scrollTo(0, 0)"></div>
+
 	<div class="content-wrap">
 		<div id="database">
+			<!-- Item cards to display -->
+		</div>
 
-			<article class="item">
-				<header class="item-header">
-					<h1>Settlers of Catan</h1>
-				</header>
-
-				<div class="item-wrap">
-					<section class="item-description">
-						<p>
-							Physical board game. Become the dominant force on the island of Catan by building settlements, cities, and
-							roads.
-						</p>
-					</section>
-
-					<section class="item-image">
-						<a href="./img-full/settlers-of-catan.jpg" target="_blank">
-							<img src="./img-thumb/settlers-of-catan.jpg" alt="Settlers of Catan">
-						</a>
-					</section>
-
-					<div class="item-metadata">
-						<section class="item-tags">
-							<ul>
-								<li>Good Condition</li>
-								<li>Board Game</li>
-								<li>Multiplayer</li>
-							</ul>
-						</section>
-
-						<section class="item-count">
-							<p>1</p>
-						</section>
-					</div>
-				</div>
-			</article>
-
-			<article class="item">
-				<header class="item-header">
-					<h1>The Art of Game Design</h1>
-					<p>Jesse Schell</p>
-				</header>
-
-				<div class="item-wrap">
-					<section class="item-description">
-						<p>
-							General purpose book on game design. Covers design from psychological, philosophical, and analytical
-							approaches through a set of lenses.
-						</p>
-					</section>
-
-					<section class="item-image">
-						<a href="./img-full/the-art-of-game-design.jpg" target="_blank">
-							<img src="./img-thumb/the-art-of-game-design.jpg" alt="The Art of Game Design">
-						</a>
-					</section>
-
-					<div class="item-metadata">
-						<section class="item-tags">
-							<ul>
-								<li>Excellent Condition</li>
-								<li>Book</li>
-								<li>Design</li>
-							</ul>
-						</section>
-
-						<section class="item-count">
-							<p>2</p>
-						</section>
-					</div>
-				</div>
-
-
-			</article>
-
-			<article class="item">
-				<header class="item-header">
-					<h1>Wired PS4 Controller</h1>
-				</header>
-
-				<div class="item-wrap">
-					<section class="item-description">
-						<p>
-							Multicolored PS4 controllers with ability to connect to desktop via cable.
-						</p>
-					</section>
-
-					<section class="item-image">
-						<a href="./img-full/wired-ps4-controller.jpg" target="_blank">
-							<img src="./img-thumb/wired-ps4-controller.jpg" alt="Wired PS4 Controller">
-						</a>
-					</section>
-
-					<div class="item-metadata">
-						<section class="item-tags">
-							<ul>
-								<li>Poor Condition</li>
-								<li>Controller</li>
-								<li>Hardware</li>
-							</ul>
-						</section>
-
-						<section class="item-count">
-							<p>4</p>
-						</section>
-					</div>
-				</div>
-			</article>
-
+		<div id="content-tooltip">
+			<p>Data loading...</p>
 		</div>
 	</div>
-
 </body>
 
 </html>
