@@ -1,10 +1,10 @@
 /**
  * @param {Item[]} items A list of items to display in the database section of the website
  */
-function renderItems(items) {
-    database = document.getElementById("database");
+export function renderItems(items) {
+    const database = document.getElementById("database");
     database.innerHTML = "";
-    for (item of items) {
+    for (let item of items) {
         database.innerHTML += getItemHTML(item);
     }
     // set display of count to items.length
@@ -13,7 +13,7 @@ function renderItems(items) {
 /**
  * @param {string[]} tags A list of search tags to display render in the search bar header
  */
-function renderSearchTags(tags) {
+export function renderSearchTags(tags) {
 
 }
 
