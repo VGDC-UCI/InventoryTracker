@@ -1,3 +1,5 @@
+import { applySearch } from './controller.js';
+
 /**
  * Defines the properties of an Item object
  * @typedef {Object} Item
@@ -33,8 +35,9 @@ export function renderItems(items) {
 export function renderSearchTags(tags) {
     // Load Tags To Search Bar
     // To place items underneath <div id="database">
+    // Attach event listener to the checkbox container
 
-    var searchTagsLocation = document.getElementsByClassName("tag-filter-list")[0];
+    const searchTagsLocation = document.getElementsByClassName("tag-filter-list")[0];
     for (let specificTag of tags) {
         var currentTag = document.createElement("div");
         currentTag.className = "tag";
@@ -50,6 +53,13 @@ export function renderSearchTags(tags) {
         currentTag.appendChild(tagLabel);
         searchTagsLocation.appendChild(currentTag);
     }
+
+    searchTagsLocation.addEventListener("change", (event) => {
+        if (event.target.type === "checkbox") {
+            // Call the function defined in controller.js
+            applySearch();
+        }
+    });
 }
 
 /**
@@ -120,6 +130,25 @@ function getItemHTML(item) {
 
     // Load item-tags
     var tagsUnorderedList = document.createElement("ul");
+
+    try {
+        var conditionStatus = item.condition[0];
+        var conditionTag = document.createElement("li");
+        if (conditionStatus == "1") {
+            var currentConditionText = document.createTextNode("Poor Condition");
+            conditionTag.appendChild(currentConditionText);
+        } else if (conditionStatus == "2") {
+            var currentConditionText = document.createTextNode("Good Condition");
+            conditionTag.appendChild(currentConditionText);
+        } else if (conditionStatus == "3") {
+            var currentConditionText = document.createTextNode("Unopened");
+            conditionTag.appendChild(currentConditionText);
+        }
+        tagsUnorderedList.appendChild(conditionTag);
+    }
+    catch (err) {
+        console.log("Missing item condition");
+    }
 
     try {
         let sortedTags = Array.from(item.tags).sort()

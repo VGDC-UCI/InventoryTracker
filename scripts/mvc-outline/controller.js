@@ -19,12 +19,18 @@ export function onGapiLoaded() {
     })
 }
 
-function applySearch() {
-    // getSearchText, getCheckedTags
-    // filteredItems = new array
-    // for each item in ALL_ITEMS
-    //      add to filteredItems if matchesSearchbar(item, searchTExt) and matchesCheckedTags(item, checkedTags)
-    // renderItems(filteredItems)
+export function applySearch() {
+    let filteredItems = [];
+    console.log("Searching...");
+    let searchText = getSearchText();
+
+    for (let currentItem of ALL_ITEMS) {
+        if (matchesSearchbar(currentItem, searchText) && matchesCheckedTags(currentItem, getCheckedTags())) {
+            filteredItems.push(currentItem);
+        }
+    }
+
+    renderItems(filteredItems);
 }
 
 
@@ -35,7 +41,19 @@ function applySearch() {
  * @return {boolean}
  */
 function matchesSearchbar(item, searchText) {
+    if (searchText.length === 0) {
+        return true;
+    } else {
+        if (typeof (item.name) === "undefined") {
+			return false;
+		}
 
+        if (item.name.toLowerCase().includes(searchText)) {
+            return true;
+		} else {
+            return false;
+		}
+    }
 }
 
 
@@ -46,58 +64,58 @@ function matchesSearchbar(item, searchText) {
  * @return {boolean}
  */
 function matchesCheckedTags(item, checkedTags) {
+    if (checkedTags.length === 0) {
+        return true;
+    }
 
+    let tempSet = new Set([...item.tags]);
+
+    try {
+        var conditionStatus = item.condition[0];
+        if (conditionStatus == "1") {
+            tempSet.add("Poor");
+        } else if (conditionStatus == "2") {
+            tempSet.add("Good");
+        } else if (conditionStatus == "3") {
+            tempSet.add("Unopened");
+        }
+    }
+    catch (err) {
+        return false;
+    }
+
+    if (checkedTags.every(x => tempSet.has(x))) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
 function getSearchText() {
+    let input = document.getElementById("searchbar");
+	let lowercasedInput = input.value.toLowerCase();
 
+    return lowercasedInput;
 }
 
 
 function getCheckedTags() {
+    let checkedTags = [];
+    const checkboxes = document.querySelectorAll("div.tag input[type='checkbox']");
 
-}
-
-function search() {
-	console.log("Searching...");
-	var input = document.getElementById("searchbar");
-	var filter = input.value.toLowerCase();
-	var newList = [];
-
-	// Case-insensitive searching
-	for (let i = 0; i < ALL_ITEMS.length; ++i) {
-		if (typeof (ALL_ITEMS[i].name) === "undefined" || typeof (document.getElementsByClassName('item-tags')[i]) === "undefined") {
-			continue;
-		}
-
-		// TODO: Tags searching via search text box as well
-		// TODO: checkTagsOfItem
-		// if (ALL_ITEMS[i].name.toLowerCase().includes(filter) && checkTagsOfItem(document.getElementsByClassName('item-tags')[i].getElementsByTagName('li'))) {
-		if (ALL_ITEMS[i].name.toLowerCase().includes(filter)) {
-			document.getElementsByClassName('item')[i].style.display = 'unset';
-		} else {
-			document.getElementsByClassName('item')[i].style.display = 'none';
-		}
-	}
-	let COUNTER = 0;
-	// Get accurate Total Count currently shown on website
-	for (let i = 0; i < ALL_ITEMS.length; ++i) {
-		if (typeof (document.getElementsByClassName('item')[i]) === "undefined") {
-			continue;
-		}
-
-		if (document.getElementsByClassName('item')[i].style.display != 'none') {
-			COUNTER++;
-		}
-	}
-	document.getElementsByClassName("total-count-number")[0].textContent = COUNTER;
-	$(`#content-tooltip p`).text(`${COUNTER} result${COUNTER != 1 ? "s" : ""}`);
+    for (let i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            // console.log(`${checkboxes[i].name} is checked.`);
+            checkedTags.push(checkboxes[i].name);
+        } 
+    }
+    return checkedTags;
 }
 
 // Add an event listener to the search bar input element to handle the input event
 const input = document.getElementById("searchbar");
-input.addEventListener("input", search);
+input.addEventListener("input", applySearch);
 
 window.onkeyup = function (e) {
 	if (e.key == "Escape") {
@@ -111,6 +129,6 @@ window.onkeyup = function (e) {
 		searchbar.val("");
 		searchbar.focus();
 
-		search();
+		applySearch();
 	}
 }
