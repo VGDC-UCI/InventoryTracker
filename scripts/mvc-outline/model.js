@@ -86,10 +86,25 @@ function convertToItem(spreadsheetRow) {
     currentItem.count           = spreadsheetRow[2];
     currentItem.location        = spreadsheetRow[3];
     currentItem.tags            = new Set(spreadsheetRow[4].split(", "));
-    currentItem.imageThumbnail  = spreadsheetRow[1];
-    currentItem.imageFull       = spreadsheetRow[1];
+    currentItem.imageThumbnail  = convertGoogleDriveLink(spreadsheetRow[1]);
+    currentItem.imageFull       = convertGoogleDriveLink(spreadsheetRow[1]);
     currentItem.keywords        = spreadsheetRow[0]; // TODO:Implement or remove keywords
     currentItem.condition       = spreadsheetRow[7];
 
     return currentItem;
+}
+
+function convertGoogleDriveLink(link) {
+    // if (!link.includes("https://drive.google.com/")) {
+    //     return `The Link: ${link} is in WRONG URL FORMAT: MUST BEGIN WITH https://drive.google.com/`;
+    // }
+
+    var resultLink = "";
+    if (link.includes("https://drive.google.com/file/d/")) {
+        var fileID = link.match(/\/d\/(.+?)\/(?:view|edit|export)?/)[1];
+        resultLink = "https://drive.google.com/uc?export=view&id=" + fileID;
+    } else {
+        resultLink = link;
+    }
+    return resultLink;
 }
