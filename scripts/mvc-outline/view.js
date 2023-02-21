@@ -1,5 +1,3 @@
-import { applySearch } from './controller.js';
-
 /**
  * Defines the properties of an Item object
  * @typedef {Object} Item
@@ -18,7 +16,7 @@ import { applySearch } from './controller.js';
 /**
  * @param {Item[]} items A list of items to display in the database section of the website
  */
-export function renderItems(items) {
+function renderItems(items) {
     const database = $("#database");
     database.empty();
     for (let item of items) {
@@ -30,7 +28,7 @@ export function renderItems(items) {
 /**
  * @param {string[]} tags A list of already sorted search tags to display in the search bar header
  */
-export function renderSearchTags(tags) {
+function renderSearchTags(tags) {
     const searchTagsLocation = $(".tag-filter-list");
     searchTagsLocation.empty()
     for (let tag of tags) {

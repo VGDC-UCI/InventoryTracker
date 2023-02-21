@@ -1,26 +1,22 @@
-import { loadGapi, fetchSpreadsheetData } from '/scripts/mvc-outline/sheetsApi.js'
-import { getInventoryData } from '/scripts/mvc-outline/model.js'
-import { renderItems, renderSearchTags } from '/scripts/mvc-outline/view.js'
-
 let ALL_ITEMS = [];
 let ALL_TAGS = [];
 
 /**
  * Call this function when the google api script loads.
  */
-export function onGapiLoaded() {
+function onGapiLoaded() {
     loadGapi(async function() {
         let spreadsheetData = await fetchSpreadsheetData();
         let inventoryData = getInventoryData(spreadsheetData);
         ALL_ITEMS = inventoryData['items'];
         ALL_TAGS = inventoryData['tags'];
         renderSearchTags(ALL_TAGS);
-        addSearchTagEventListeners();
+        addSearchEventListeners();
         renderItems(ALL_ITEMS);
     })
 }
 
-export function applySearch() {
+function applySearch() {
     let filteredItems = [];
     console.log("Searching...");
     let searchText = getSearchText();
@@ -89,7 +85,6 @@ function getCheckedTags() {
 
     for (let i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
-            console.log(`${checkboxes[i].name} is checked.`);
             checkedTags.push(checkboxes[i].name);
         } 
     }
@@ -97,21 +92,19 @@ function getCheckedTags() {
 }
 
 
-function addSearchTagEventListeners() {
+function addSearchEventListeners() {
+    const searchBar = $("#searchbar");
+    searchBar.on("input", function() { applySearch(); });
+
     const searchTags = $("div.tag input[type='checkbox']");
     searchTags.each(function() {
         var tag = $(this);
-        tag.on("change", function() {
-            applySearch();
-        });
+        tag.on("change", function() { applySearch(); });
     });
 }
 
 
-// Add an event listener to the search bar input element to handle the input event
-const input = document.getElementById("searchbar");
-input.addEventListener("input", applySearch);
-
+// Clears search filters on Escape key pressed
 window.onkeyup = function (e) {
 	if (e.key == "Escape") {
 		window.scrollTo(0, 0);

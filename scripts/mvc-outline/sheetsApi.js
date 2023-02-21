@@ -16,7 +16,7 @@ const RANGE = 'A2:I1000000';
  * Callback after api.js is loaded.
  * @param {function} afterInit Callback function to perform after the gapi client is initialized.
  */
-export function loadGapi(afterInit) {
+function loadGapi(afterInit) {
     // console.log("Load Gapi")
     gapi.load('client', function() {initializeGapiClient(afterInit)});
 }
@@ -41,7 +41,7 @@ async function initializeGapiClient(afterInit) {
  * Fetches spreadsheet data from the VGDC Inventory spreadsheet. Adapted from Google Sheets API quickstart
  * @return {string[][]} spreadsheet data in a 2D array of strings.
  */
-export async function fetchSpreadsheetData() {
+async function fetchSpreadsheetData() {
     let response;
     try {
         response = await gapi.client.sheets.spreadsheets.values.get({

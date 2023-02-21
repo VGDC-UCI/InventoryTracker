@@ -39,6 +39,7 @@ function Condition() {
     this.name = null;
 }
 
+
 /**
  * Defines the properties of an InventoryData object
  * @typedef     {Object}    InventoryData
@@ -50,7 +51,7 @@ function Condition() {
  * @param   {string[][]}    spreadsheetData
  * @returns {InventoryData}
  */
-export function getInventoryData(spreadsheetData) {
+function getInventoryData(spreadsheetData) {
     /*
     //         0:      Name                "Name"                          Note: Self-explanatory
     //         1:      Photo               "Google Drive URL"              Note: Should find another way instead of using a link that may change
@@ -148,8 +149,8 @@ function convertGoogleDriveLink(link) {
 
     var resultLink = "";
     if (link.includes("https://drive.google.com/file/d/")) {
-        var fileID = link.match(/\/d\/(.+?)\/(?:view|edit|export)?/)[1];
-        resultLink = "https://drive.google.com/uc?export=view&id=" + fileID;
+        var fileID = link.match(/\/d\/(.+?)\/(?:view|edit|)?/)[1];
+        resultLink = "https://drive.google.com/uc?=view&id=" + fileID;
     } else {
         resultLink = link;
     }
