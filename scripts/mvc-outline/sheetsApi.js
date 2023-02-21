@@ -41,12 +41,12 @@ async function initializeGapiClient(afterInit) {
  * Fetches spreadsheet data from the VGDC Inventory spreadsheet. Adapted from Google Sheets API quickstart
  * @return {string[][]} spreadsheet data in a 2D array of strings.
  */
-async function fetchSpreadsheetData() {
+async function fetchSpreadsheetData(sheetName = "Main") {
     let response;
     try {
         response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: SPREADSHEET_ID,
-            range: RANGE,
+            range: sheetName + "!" + RANGE,
         });
     } catch (err) {
         console.log(err.message);
@@ -61,6 +61,8 @@ async function fetchSpreadsheetData() {
     // Sort the arrays ascending order; Ex) 0 to 9, then A to Z
     range['values'].sort();
 
+    // TODO: This logic stops processing rows after an empty one is found.
+    //       This would result in filled rows below an empty row not being included on the website
     // Remove empty arrays or arrays with empty string for item name
     let index = 0;
     while (range['values'][index].length === 0 || range['values'][index][0] === '') {
@@ -68,5 +70,6 @@ async function fetchSpreadsheetData() {
         // Implement a break if neither while condition is true
     }
 
+    console.log(range['values'].slice(index));
     return range['values'].slice(index);
 }
