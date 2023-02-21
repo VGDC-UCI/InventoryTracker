@@ -15,6 +15,7 @@ export function onGapiLoaded() {
         ALL_ITEMS = inventoryData['items'];
         ALL_TAGS = inventoryData['tags'];
         renderSearchTags(ALL_TAGS);
+        addSearchTagEventListeners();
         renderItems(ALL_ITEMS);
     })
 }
@@ -23,9 +24,10 @@ export function applySearch() {
     let filteredItems = [];
     console.log("Searching...");
     let searchText = getSearchText();
+    let checkedTags = getCheckedTags();
 
     for (let currentItem of ALL_ITEMS) {
-        if (matchesSearchbar(currentItem, searchText) && matchesCheckedTags(currentItem, getCheckedTags())) {
+        if (matchesSearchbar(currentItem, searchText) && matchesCheckedTags(currentItem, checkedTags)) {
             filteredItems.push(currentItem);
         }
     }
@@ -68,27 +70,8 @@ function matchesCheckedTags(item, checkedTags) {
         return true;
     }
 
-    let tempSet = new Set([...item.tags]);
-
-    try {
-        var conditionStatus = item.condition[0];
-        if (conditionStatus == "1") {
-            tempSet.add("Poor");
-        } else if (conditionStatus == "2") {
-            tempSet.add("Good");
-        } else if (conditionStatus == "3") {
-            tempSet.add("Unopened");
-        }
-    }
-    catch (err) {
-        return false;
-    }
-
-    if (checkedTags.every(x => tempSet.has(x))) {
-        return true;
-    } else {
-        return false;
-    }
+    const itemTags = new Set(item.tags).add(item.condition.name);
+    return checkedTags.every(x => itemTags.has(x));
 }
 
 
@@ -106,12 +89,24 @@ function getCheckedTags() {
 
     for (let i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
-            // console.log(`${checkboxes[i].name} is checked.`);
+            console.log(`${checkboxes[i].name} is checked.`);
             checkedTags.push(checkboxes[i].name);
         } 
     }
     return checkedTags;
 }
+
+
+function addSearchTagEventListeners() {
+    const searchTags = $("div.tag input[type='checkbox']");
+    searchTags.each(function() {
+        var tag = $(this);
+        tag.on("change", function() {
+            applySearch();
+        });
+    });
+}
+
 
 // Add an event listener to the search bar input element to handle the input event
 const input = document.getElementById("searchbar");

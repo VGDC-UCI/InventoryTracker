@@ -10,7 +10,7 @@
  * @property    {string}    imageThumbnail
  * @property    {string}    imageFull
  * @property    {Set}       keywords
- * @property    {string}    condition
+ * @property    {Condition} condition Reference to condition object describing condition
  */
 function Item() {
     // Initial Blank Default Item
@@ -23,7 +23,20 @@ function Item() {
     this.imageThumbnail = "";
     this.imageFull      = "";
     this.keywords       = new Set();
-    this.condition      = "";
+    this.condition      = null;
+}
+
+
+/**
+ * Defines the properties of a Condition object
+ * @typedef {Object} Condition
+ * @property {int} id
+ * @property {string} name
+ */
+function Condition() {
+    // Initial Blank Default Condition
+    this.id = null;
+    this.name = null;
 }
 
 /**
@@ -52,24 +65,33 @@ export function getInventoryData(spreadsheetData) {
 
     // console.log("Getting Inventory Data")
     let items = [];
-    let conditionTags = new Set();
+    let conditionTags = new Map();
     let itemTags = new Set();
 
     for (let i = 0; i < spreadsheetData.length; i++) {
         let currentItem = convertToItem(spreadsheetData[i]);
         items.push(currentItem);
-        conditionTags.add(currentItem.condition.substring(4));
+        if (currentItem.condition !== null) {
+            conditionTags.set(currentItem.condition.id, currentItem.condition.name);
+        }
         currentItem.tags.forEach(currentTag => itemTags.add(currentTag));
     }
 
-    conditionTags = Array.from(conditionTags).sort();
-    itemTags = Array.from(itemTags).sort();
+    // Sort condition tags by id number and return only the name of the tag
+    conditionTags = Array.from(
+        [...conditionTags.entries()]
+        .sort(function (e1, e2) { return e1[0] - e2[0]; })
+        .map(function (e) { return e[1]; })
+    );
+    itemTags = Array.from(itemTags)
+        .sort(function (t1, t2) { return t1.toLowerCase().localeCompare(t2.toLowerCase()); });
 
     const InventoryDataObject = {
         items: items,
         tags: conditionTags.concat(itemTags)
     };
 
+    console.log(InventoryDataObject);
     return InventoryDataObject;
 }
 
@@ -89,10 +111,35 @@ function convertToItem(spreadsheetRow) {
     currentItem.imageThumbnail  = convertGoogleDriveLink(spreadsheetRow[1]);
     currentItem.imageFull       = convertGoogleDriveLink(spreadsheetRow[1]);
     currentItem.keywords        = spreadsheetRow[0]; // TODO:Implement or remove keywords
-    currentItem.condition       = spreadsheetRow[7];
+    currentItem.condition       = getItemCondition(spreadsheetRow[7]);
 
     return currentItem;
 }
+
+
+/**
+ * @param {string} conditionStr The full condtion str from the spreadsheet
+ * @return {Condition} A Condition object, or null if object could not be created successfully
+ */
+function getItemCondition(conditionStr) {
+    const conditionArray = conditionStr.split(" - ");
+    if (conditionArray.length != 2) {
+        return null;
+    }
+
+    const id = parseInt(conditionArray[0].trim());
+    const name = conditionArray[1].trim();
+
+    if (isNaN(id) || name === "") {
+        return null;
+    }
+
+    const condition = new Condition();
+    condition.id = id;
+    condition.name = name;
+    return condition;
+}
+
 
 function convertGoogleDriveLink(link) {
     // if (!link.includes("https://drive.google.com/")) {

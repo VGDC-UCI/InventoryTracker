@@ -19,47 +19,23 @@ import { applySearch } from './controller.js';
  * @param {Item[]} items A list of items to display in the database section of the website
  */
 export function renderItems(items) {
-    const database = document.getElementById("database");
-    database.innerHTML = "";
+    const database = $("#database");
+    database.empty();
     for (let item of items) {
-        database.innerHTML += getItemHTML(item);
+        database.append(getItemHTML(item));
     }
-    // set display of count to items.length
-    document.getElementsByClassName("total-count-number")[0].textContent = items.length;
-    $(`#content-tooltip p`).text(`${items.length} result${items.length != 1 ? "s" : ""}`);
+    updateItemCount(items.length);
 }
 
 /**
- * @param {string[]} tags A list of already sorted search tags to display render in the search bar header
+ * @param {string[]} tags A list of already sorted search tags to display in the search bar header
  */
 export function renderSearchTags(tags) {
-    // Load Tags To Search Bar
-    // To place items underneath <div id="database">
-    // Attach event listener to the checkbox container
-
-    const searchTagsLocation = document.getElementsByClassName("tag-filter-list")[0];
-    for (let specificTag of tags) {
-        var currentTag = document.createElement("div");
-        currentTag.className = "tag";
-        var tagType = document.createElement("input");
-        tagType.type = "checkbox";
-        tagType.name = specificTag;
-        tagType.id = "tag-" + specificTag;
-        currentTag.appendChild(tagType);
-
-        var tagLabel = document.createElement("label");
-        tagLabel.htmlFor = "tag-" + specificTag;
-        tagLabel.appendChild(document.createTextNode(specificTag));
-        currentTag.appendChild(tagLabel);
-        searchTagsLocation.appendChild(currentTag);
+    const searchTagsLocation = $(".tag-filter-list");
+    searchTagsLocation.empty()
+    for (let tag of tags) {
+        searchTagsLocation.append(getSearchTagHTML(tag));
     }
-
-    searchTagsLocation.addEventListener("change", (event) => {
-        if (event.target.type === "checkbox") {
-            // Call the function defined in controller.js
-            applySearch();
-        }
-    });
 }
 
 /**
@@ -67,130 +43,45 @@ export function renderSearchTags(tags) {
  * @return {string} The HTML that displays an item in the database
  */
 function getItemHTML(item) {
-    // console.log(item);
-    let itemHTML = "";
+    const title = item.name;
+    const subtitle = item.subtitle;
+    const description = item.description;
+    const imgPathFull = item.imageFull;
+    const imgPathShort = item.imageThumbnail;
+    const count = item.count;
+    const tagsList = [item.condition.name].concat(Array.from(item.tags).sort());
 
-    // Make <article class ="item">
-    var article = document.createElement("article");
-    article.className = "item";
+    let tagsHtml = "";
+    tagsList.forEach(tagName => {tagsHtml += `<li>${tagName}</li>`;});
 
-    // Make <header class="item-header">
-    var header = document.createElement("header");
-    header.className = "item-header";
+    return `
+        <article class="item">
+            <header class="item-header">
+                <h1>${title}</h1>
+                <p>${subtitle}</p>
+            </header>
 
-    // Make <h1> item name </h1>
-    var name = document.createElement("h1");
-    var nameText = document.createTextNode(item.name);
-    name.appendChild(nameText);
+            <div class="item-wrap">
+                <section class="item-description">
+                    <p>${description}</p>
+                </section>
 
-    // Make <div class="item-wrap">
-    var itemWrap = document.createElement("div");
-    itemWrap.className = "item-wrap";
+                <section class="item-image">
+                    <a href="${imgPathFull}" target="_blank">
+                        <img src="${imgPathShort}" alt="${title}">
+                    </a>
+                </section>
 
-    // Make <section class="item-description">
-    var itemDescription = document.createElement("section");
-    itemDescription.className = "item-description";
-
-    // Load item description
-    try {
-        var itemDescriptionTextParagraph = document.createElement("p");
-        var itemDescriptionText = document.createTextNode("");
-        if (typeof item.description !== "undefined") {
-            itemDescriptionText = document.createTextNode(item.description);
-        }
-        itemDescriptionTextParagraph.appendChild(itemDescriptionText);
-        itemDescription.appendChild(itemDescriptionTextParagraph);
-    }
-    catch (err) {
-        console.log("Missing item description");
-    }
-
-    // Make <section class="item-image">
-    var itemImage = document.createElement("section");
-    itemImage.className = "item-image";
-
-    // Load item-image full-res
-    var image = document.createElement("a");
-    image.href = item.imageFull;
-    image.target = "_blank";
-
-    // Load item-image thumbnail
-    var imageThumbnail = document.createElement("img");
-    imageThumbnail.src = item.imageFull;
-    imageThumbnail.alt = item.imageThumbnail;
-    image.appendChild(imageThumbnail);
-
-    // Make <div class="item-metadata">
-    var itemMetadata = document.createElement("div");
-    itemMetadata.className = "item-metadata";
-
-    // Make <section class="item-tags">
-    var itemTag = document.createElement("section");
-    itemTag.className = "item-tags";
-
-    // Load item-tags
-    var tagsUnorderedList = document.createElement("ul");
-
-    try {
-        var conditionStatus = item.condition[0];
-        var conditionTag = document.createElement("li");
-        if (conditionStatus == "1") {
-            var currentConditionText = document.createTextNode("Poor Condition");
-            conditionTag.appendChild(currentConditionText);
-        } else if (conditionStatus == "2") {
-            var currentConditionText = document.createTextNode("Good Condition");
-            conditionTag.appendChild(currentConditionText);
-        } else if (conditionStatus == "3") {
-            var currentConditionText = document.createTextNode("Unopened");
-            conditionTag.appendChild(currentConditionText);
-        }
-        tagsUnorderedList.appendChild(conditionTag);
-    }
-    catch (err) {
-        console.log("Missing item condition");
-    }
-
-    try {
-        let sortedTags = Array.from(item.tags).sort()
-        for (let specificTag of sortedTags) {
-            var currentTag = document.createElement("li");
-            var currentTagText = document.createTextNode(specificTag);
-            currentTag.appendChild(currentTagText);
-            tagsUnorderedList.appendChild(currentTag);
-        }
-        itemTag.appendChild(tagsUnorderedList);
-    }
-    catch (err) {
-        console.log("Missing item tags");
-    }
-
-    // Make <section class="item-count">
-    try {
-        var itemCount = document.createElement("section");
-        itemCount.className = "item-count";
-        var itemCountParagraph = document.createElement("p");
-        var itemCountNumber = document.createTextNode(" Count Unknown");
-        if (typeof item.count !== "undefined") {
-            itemCountNumber = document.createTextNode(item.count);
-        }
-        itemCountParagraph.appendChild(itemCountNumber);
-        itemCount.appendChild(itemCountParagraph);
-    }
-    catch (err) {
-        console.log("Missing item count");
-    }
-
-    itemMetadata.appendChild(itemTag);
-    itemMetadata.appendChild(itemCount);
-    itemImage.appendChild(image);
-    itemWrap.appendChild(itemDescription);
-    itemWrap.appendChild(itemImage);
-    itemWrap.appendChild(itemMetadata);
-    header.appendChild(name);
-    article.appendChild(header);
-    article.appendChild(itemWrap);
-
-    return article.outerHTML;
+                <div class="item-metadata">
+                    <section class="item-tags">
+                        <ul>${tagsHtml}</ul>
+                    </section>
+                    <section class="item-count">
+                        <p>${count}</p>
+                    </section>
+                </div>
+            </div>
+        </article>`;
 }
 
 
@@ -204,9 +95,24 @@ function getListItemHTML(item) {
 
 
 /**
- * @param {string} tag The name of the tag to display
+ * @param {string} tagName The name of the tag to display
  * @return {string} The HTML of the tag to display
  */
-function getSearchTagHTML(tag) {
+function getSearchTagHTML(tagName) {
+    const tagId = "tag-" + tagName
+    return `
+        <div class="tag">
+            <input type="checkbox" name="${tagName}" id="${tagId}" />
+            <label for="${tagId}">${tagName}</label>
+        </div>`;
+}
 
+
+/** 
+ * Updates the item count display to the given number
+ * @param {int} numItems the number of items that are currently displayed in the database
+ */
+function updateItemCount(numItems) {
+    document.getElementsByClassName("total-count-number")[0].textContent = numItems;
+    $(`#content-tooltip p`).text(`${numItems} result${numItems != 1 ? "s" : ""}`);
 }
