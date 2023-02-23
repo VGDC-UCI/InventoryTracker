@@ -1,15 +1,20 @@
 let ALL_ITEMS = [];
 let ALL_TAGS = [];
+let ALL_LOCATIONS = [];
 
 /**
  * Call this function when the google api script loads.
  */
 function onGapiLoaded() {
     loadGapi(async function() {
-        let spreadsheetData = await fetchSpreadsheetData();
-        let inventoryData = getInventoryData(spreadsheetData);
-        ALL_ITEMS = inventoryData['items'];
-        ALL_TAGS = inventoryData['tags'];
+        let locationSpreadsheetData = await fetchSpreadsheetData('Locations');
+        let itemSpreadsheetData = await fetchSpreadsheetData();
+        ALL_LOCATIONS = getLocationData(locationSpreadsheetData);
+        let inventoryData = getInventoryData(itemSpreadsheetData, ALL_LOCATIONS);
+
+        console.log(ALL_LOCATIONS);
+        ALL_ITEMS = inventoryData.items;
+        ALL_TAGS = inventoryData.tags;
         renderSearchTags(ALL_TAGS);
         addSearchEventListeners();
         renderItems(ALL_ITEMS);
@@ -96,10 +101,15 @@ function addSearchEventListeners() {
     const searchBar = $("#searchbar");
     searchBar.on("input", function() { applySearch(); });
 
-    const searchTags = $("div.tag input[type='checkbox']");
-    searchTags.each(function() {
-        var tag = $(this);
-        tag.on("change", function() { applySearch(); });
+    const searchTags = $("div.tag");
+    searchTags.on("click", function() {
+        const tag = $(this);
+        const checkbox = tag.find("input[type='checkbox']");
+
+        // Toggle checkbox state and selected class state then apply search filter
+        checkbox.prop("checked", !checkbox.prop("checked"));
+        tag.toggleClass('selected');
+        applySearch();
     });
 }
 

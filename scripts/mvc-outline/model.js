@@ -41,6 +41,22 @@ function Condition() {
 
 
 /**
+ * Defines the properties of a Location object
+ * @typedef {Object} Location
+ * @property {int} id
+ * @property {string} name
+ * @property {string} photo
+ * @property {string} description
+ */
+function Location() {
+    this.id = null;
+    this.name = null;
+    this.photo = null;
+    this.description = null;
+}
+
+
+/**
  * Defines the properties of an InventoryData object
  * @typedef     {Object}    InventoryData
  * @property    {Item[]}    items
@@ -51,7 +67,7 @@ function Condition() {
  * @param   {Map<string, string>[]}    spreadsheetData
  * @returns {InventoryData}
  */
-function getInventoryData(spreadsheetData) {
+function getInventoryData(spreadsheetData, locations) {
     /*
     //         0:      Name                "Name"                          Note: Self-explanatory
     //         1:      Photo               "Google Drive URL"              Note: Should find another way instead of using a link that may change
@@ -70,12 +86,14 @@ function getInventoryData(spreadsheetData) {
     let itemTags = new Set();
 
     for (let i = 0; i < spreadsheetData.length; i++) {
-        let currentItem = convertToItem(spreadsheetData[i]);
-        items.push(currentItem);
-        if (currentItem.condition !== null) {
-            conditionTags.set(currentItem.condition.id, currentItem.condition.name);
+        if (isVisible(spreadsheetData[i])) {
+            let currentItem = convertToItem(spreadsheetData[i], locations);
+            items.push(currentItem);
+            if (currentItem.condition !== null) {
+                conditionTags.set(currentItem.condition.id, currentItem.condition.name);
+            }
+            currentItem.tags.forEach(currentTag => itemTags.add(currentTag));
         }
-        currentItem.tags.forEach(currentTag => itemTags.add(currentTag));
     }
 
     // Sort condition tags by id number and return only the name of the tag
@@ -87,34 +105,64 @@ function getInventoryData(spreadsheetData) {
     itemTags = Array.from(itemTags)
         .sort(function (t1, t2) { return t1.toLowerCase().localeCompare(t2.toLowerCase()); });
 
+    // sort items by name
+    items.sort((item1, item2) => item1.name.localeCompare(item2.name));
+
+
     const InventoryDataObject = {
         items: items,
         tags: conditionTags.concat(itemTags)
     };
-
     console.log(InventoryDataObject);
     return InventoryDataObject;
+}
+
+/**
+ * @param {Map<string, string>[]} spreadsheetData
+ * @return {Location[]}
+ */
+function getLocationData(spreadsheetData) {
+    let locations = [];
+
+    for (let i = 0; i < spreadsheetData.length; i++) {
+        let location = convertToLocation(spreadsheetData[i]);
+        locations.push(location);
+    }
+
+    return locations;
 }
 
 /**
  * @param   {Map<string, string>} spreadsheetRow A spreadsheet row
  * @return  {Item} An item object
  */
-function convertToItem(spreadsheetRow) {
+function convertToItem(spreadsheetRow, locations) {
     const currentItem = new Item();
-
     currentItem.name            = spreadsheetRow.get('name');
     currentItem.subtitle        = spreadsheetRow.get('subtitle');
     currentItem.description     = spreadsheetRow.get('description');
     currentItem.count           = spreadsheetRow.get('count');
-    currentItem.location        = spreadsheetRow.get('location');
+    currentItem.location        = locations.find(l => l.name === spreadsheetRow.get('location'));
     currentItem.tags            = new Set(spreadsheetRow.get('tags').split(", "));
     currentItem.imageThumbnail  = convertGoogleDriveLink(spreadsheetRow.get('photo'));
     currentItem.imageFull       = convertGoogleDriveLink(spreadsheetRow.get('photo'));
     currentItem.keywords        = spreadsheetRow.get('name'); // TODO:Implement or remove keywords
     currentItem.condition       = getItemCondition(spreadsheetRow.get('condition'));
-
     return currentItem;
+}
+
+
+/**
+ * @param {Map<string, string>} spreadsheetRow
+ * @return {Location}
+ */
+function convertToLocation(spreadsheetRow) {
+    const location = new Location();
+    location.id = spreadsheetRow.get("id");
+    location.name = spreadsheetRow.get("location name");
+    location.photo = convertGoogleDriveLink(spreadsheetRow.get("photo link"));
+    location.description = spreadsheetRow.get("location description");
+    return location;
 }
 
 
@@ -155,4 +203,9 @@ function convertGoogleDriveLink(link) {
         resultLink = link;
     }
     return resultLink;
+}
+
+
+function isVisible(itemSpreadsheetRow) {
+    return itemSpreadsheetRow.get('[visible]') === 'TRUE';
 }

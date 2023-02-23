@@ -100,8 +100,8 @@ function getSearchTagHTML(tagName) {
     const tagId = "tag-" + tagName
     return `
         <div class="tag">
-            <input type="checkbox" name="${tagName}" id="${tagId}" />
-            <label for="${tagId}">${tagName}</label>
+            <input hidden type="checkbox" name="${tagName}" id="${tagId}"/>
+            <p>${tagName}</p>
         </div>`;
 }
 
