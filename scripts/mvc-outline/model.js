@@ -48,7 +48,7 @@ function Condition() {
  */
 
 /**
- * @param   {string[][]}    spreadsheetData
+ * @param   {Map<string, string>[]}    spreadsheetData
  * @returns {InventoryData}
  */
 function getInventoryData(spreadsheetData) {
@@ -97,22 +97,22 @@ function getInventoryData(spreadsheetData) {
 }
 
 /**
- * @param   {string[]} spreadsheetRow A spreadsheet row
+ * @param   {Map<string, string>} spreadsheetRow A spreadsheet row
  * @return  {Item} An item object
  */
 function convertToItem(spreadsheetRow) {
     const currentItem = new Item();
 
-    currentItem.name            = spreadsheetRow[0];
-    currentItem.subtitle        = spreadsheetRow[5];
-    currentItem.description     = spreadsheetRow[6];
-    currentItem.count           = spreadsheetRow[2];
-    currentItem.location        = spreadsheetRow[3];
-    currentItem.tags            = new Set(spreadsheetRow[4].split(", "));
-    currentItem.imageThumbnail  = convertGoogleDriveLink(spreadsheetRow[1]);
-    currentItem.imageFull       = convertGoogleDriveLink(spreadsheetRow[1]);
-    currentItem.keywords        = spreadsheetRow[0]; // TODO:Implement or remove keywords
-    currentItem.condition       = getItemCondition(spreadsheetRow[7]);
+    currentItem.name            = spreadsheetRow.get('name');
+    currentItem.subtitle        = spreadsheetRow.get('subtitle');
+    currentItem.description     = spreadsheetRow.get('description');
+    currentItem.count           = spreadsheetRow.get('count');
+    currentItem.location        = spreadsheetRow.get('location');
+    currentItem.tags            = new Set(spreadsheetRow.get('tags').split(", "));
+    currentItem.imageThumbnail  = convertGoogleDriveLink(spreadsheetRow.get('photo'));
+    currentItem.imageFull       = convertGoogleDriveLink(spreadsheetRow.get('photo'));
+    currentItem.keywords        = spreadsheetRow.get('name'); // TODO:Implement or remove keywords
+    currentItem.condition       = getItemCondition(spreadsheetRow.get('condition'));
 
     return currentItem;
 }

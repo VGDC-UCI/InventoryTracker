@@ -9,7 +9,7 @@ const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
 const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 
 const SPREADSHEET_ID = '1bkOsHBlgEeVSQQWGd9n0E9ywy_K419WTP0Cqv5hd-QI';
-const RANGE = 'A2:I1000000';
+const RANGE = 'A1:K100';
 
 
 /**
@@ -37,9 +37,10 @@ async function initializeGapiClient(afterInit) {
 }
 
 
+
 /**
  * Fetches spreadsheet data from the VGDC Inventory spreadsheet. Adapted from Google Sheets API quickstart
- * @return {string[][]} spreadsheet data in a 2D array of strings.
+ * @return {Map<string, string>[]} A list of spreadsheet rows mapping column name to column value
  */
 async function fetchSpreadsheetData(sheetName = "Main") {
     let response;
@@ -54,22 +55,35 @@ async function fetchSpreadsheetData(sheetName = "Main") {
     }
 
     const range = response.result;
+    console.log("response: " + range)
     if (!range || !range.values || range.values.length == 0) {
         console.log("no values found");
         return;
     }
-    // Sort the arrays ascending order; Ex) 0 to 9, then A to Z
-    range['values'].sort();
 
-    // TODO: This logic stops processing rows after an empty one is found.
-    //       This would result in filled rows below an empty row not being included on the website
-    // Remove empty arrays or arrays with empty string for item name
-    let index = 0;
-    while (range['values'][index].length === 0 || range['values'][index][0] === '') {
-        index++;
-        // Implement a break if neither while condition is true
-    }
+    // read column headers
+    const headers = range['values'][0].map(header => header.toLowerCase());
+    const visibleCol = headers.findIndex(e => e === '[visible]');
 
-    console.log(range['values'].slice(index));
-    return range['values'].slice(index);
+    // Remove empty/non-visible rows and return a list of Maps sorted by name
+    let rows = range['values']
+        .filter(row => isVisible(row, visibleCol))
+        .map(row => createRowMap(row, headers))
+        .sort((rowMap1, rowMap2) => rowMap1.get('name').localeCompare(rowMap2.get('name')));
+
+    console.log("headers: ");
+    console.log(headers);
+    console.log("rows: ");
+    console.log(rows);
+
+    return rows;
+}
+
+
+function createRowMap(row, headers) {
+    return new Map(row.map((value, index) => [headers[index], value]));
+}
+
+function isVisible(row, visibleCol) {
+    return visibleCol > 0 && visibleCol < row.length && row[visibleCol] === 'TRUE';
 }
