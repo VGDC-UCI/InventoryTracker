@@ -11,7 +11,7 @@ const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
 const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 
 const SPREADSHEET_ID = '1bkOsHBlgEeVSQQWGd9n0E9ywy_K419WTP0Cqv5hd-QI';
-const RANGE = 'A1:K100000';
+const RANGE = 'A1:M100000';
 
 
 /**

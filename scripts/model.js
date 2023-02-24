@@ -90,7 +90,11 @@ function getInventoryData(spreadsheetData, locations) {
         if (isVisible(spreadsheetData[i])) {
             let currentItem = convertToItem(spreadsheetData[i], locations);
             items.push(currentItem);
-            currentItem.tags.forEach(tag => itemTags.add(tag));
+            currentItem.tags.forEach(function(tag) {
+                if (tag !== '') {
+                    itemTags.add(tag)
+                }
+            });
         }
     }
 

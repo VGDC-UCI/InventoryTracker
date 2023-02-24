@@ -86,6 +86,10 @@
 	float: left;
 }
 
+.item-location:hover {
+	color: var(--color-dark);
+}
+
 .item-location i {
 	margin-right: .2em;
 }
