@@ -1,3 +1,5 @@
+"use strict"
+
 // TODO(developer): Set to client ID and API key from the Developer Console
 const API_KEY = 'AIzaSyBPKlmo8xEo4FbWnToU9BR3OCRgEHSmdbs';
 

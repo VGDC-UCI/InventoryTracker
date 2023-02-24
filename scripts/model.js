@@ -1,3 +1,5 @@
+"use strict"
+
 /**
  * Defines the properties of an Item object
  * @typedef     {Object}    Item
@@ -9,7 +11,6 @@
  * @property    {Set}       tags set of tags for item (does not include condition)
  * @property    {string}    imageThumbnail
  * @property    {string}    imageFull
- * @property    {Set}       keywords
  * @property    {Condition} condition Reference to condition object describing condition
  */
 function Item() {
@@ -22,7 +23,6 @@ function Item() {
     this.tags           = new Set();
     this.imageThumbnail = "";
     this.imageFull      = "";
-    this.keywords       = new Set();
     this.condition      = null;
 }
 
@@ -145,7 +145,6 @@ function convertToItem(spreadsheetRow, locations) {
     currentItem.tags            = new Set(spreadsheetRow.get('tags').split(", "));
     currentItem.imageThumbnail  = convertGoogleDriveLink(spreadsheetRow.get('photo'));
     currentItem.imageFull       = convertGoogleDriveLink(spreadsheetRow.get('photo'));
-    currentItem.keywords        = spreadsheetRow.get('name'); // TODO:Implement or remove keywords
     currentItem.condition       = spreadsheetRow.get('condition');
     return currentItem;
 }
@@ -193,9 +192,9 @@ function convertGoogleDriveLink(link) {
     //     return `The Link: ${link} is in WRONG URL FORMAT: MUST BEGIN WITH https://drive.google.com/`;
     // }
 
-    var resultLink = "";
+    let resultLink = "";
     if (link.includes("https://drive.google.com/file/d/")) {
-        var fileID = link.match(/\/d\/(.+?)\/(?:view|edit|)?/)[1];
+        const fileID = link.match(/\/d\/(.+?)\/(?:view|edit|)?/)[1];
         resultLink = "https://drive.google.com/uc?=view&id=" + fileID;
     } else {
         resultLink = link;

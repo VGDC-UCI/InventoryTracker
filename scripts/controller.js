@@ -1,3 +1,5 @@
+"use strict"
+
 let ALL_ITEMS = [];
 let ALL_TAGS = [];
 let ALL_LOCATIONS = [];

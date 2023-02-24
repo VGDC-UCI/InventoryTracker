@@ -1,3 +1,5 @@
+"use strict"
+
 /**
  * Defines the properties of an Item object
  * @typedef {Object} Item
@@ -9,7 +11,6 @@
  * @property {Set} tags set of tags for item (does not include condition)
  * @property {string} imageThumbnail
  * @property {string} imageFull
- * @property {Set} keywords
  * @property {string} condition
  */
 
