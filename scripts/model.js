@@ -51,6 +51,7 @@ function Condition() {
 function Location() {
     this.id = null;
     this.name = null;
+    this.displayName = null;
     this.photo = null;
     this.description = null;
 }
@@ -158,6 +159,7 @@ function convertToLocation(spreadsheetRow) {
     const location = new Location();
     location.id = spreadsheetRow.get("id");
     location.name = spreadsheetRow.get("location name");
+    location.displayName = spreadsheetRow.get("display name");
     location.photo = convertGoogleDriveLink(spreadsheetRow.get("photo link"));
     location.description = spreadsheetRow.get("location description");
     return location;

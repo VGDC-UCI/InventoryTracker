@@ -56,13 +56,25 @@ function getItemHTML(item) {
     const title = item.name;
     const subtitle = item.subtitle;
     const description = item.description;
+
     const imgPathFull = item.imageFull;
     const imgPathShort = item.imageThumbnail;
+
+    let locName = "Unspecified";
+    let locTooltip = "Ask an officer where this item can be found!";
+    let locImg = "";
+    if (item.location) {
+        locName = item.location.displayName;
+        locTooltip = item.location.description;
+        locImg = item.location.photo;
+    }
+    const locHref = locImg ? `href=\"${locImg}\"` : "";
+
     const count = item.count;
     const tagsList = [item.condition].concat(Array.from(item.tags).sort());
 
     let tagsHtml = "";
-    tagsList.forEach(tagName => {tagsHtml += `<li>${tagName}</li>`;});
+    tagsList.forEach(tagName => { tagsHtml += `<li>${tagName}</li>`; });
 
     return `
         <article class="item">
@@ -82,14 +94,22 @@ function getItemHTML(item) {
                     </a>
                 </section>
 
-                <div class="item-metadata">
-                    <section class="item-tags">
-                        <ul>${tagsHtml}</ul>
-                    </section>
-                    <section class="item-count">
-                        <p>${count}</p>
-                    </section>
-                </div>
+                <section class="item-tags">
+                    <ul>${tagsHtml}</ul>
+                </section>
+
+                <section class="item-location">
+                    <a ${locHref} title=\"${locTooltip}\" target="_blank">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>${locName}</span>
+                    </a>
+                </section>
+
+                <section class="item-count">
+                    <p>${count}</p>
+                </section>
+
+                <div class="clearfix"></div>
             </div>
         </article>`;
 }
