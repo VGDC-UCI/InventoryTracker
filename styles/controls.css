@@ -55,6 +55,7 @@
 	margin: 0.2em;
 	background-color: var(--color-sky);
 	border-radius: 0.8em;
+	cursor: pointer;
 }
 
 .controls .tag.selected {

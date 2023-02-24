@@ -1,6 +1,12 @@
 let ALL_ITEMS = [];
 let ALL_TAGS = [];
 let ALL_LOCATIONS = [];
+const ALL_CONDITIONS = [
+    {id: 1, name: "❗❗ Poor"},
+    {id: 2, name: "👍 Good"},
+    {id: 3, name: "✨ Unopened"}
+];
+
 
 /**
  * Call this function when the google api script loads.
@@ -16,26 +22,35 @@ function onGapiLoaded() {
         ALL_ITEMS = inventoryData.items;
         ALL_TAGS = inventoryData.tags;
         renderSearchTags(ALL_TAGS);
+        renderSearchFilter("condition-filter", ALL_CONDITIONS);
+        renderSearchFilter("location-filter", ALL_LOCATIONS);
         addSearchEventListeners();
         renderItems(ALL_ITEMS);
     })
 }
+
 
 function applySearch() {
     let filteredItems = [];
     console.log("Searching...");
     let searchText = getSearchText();
     let checkedTags = getCheckedTags();
+    let conditionValue = $("#condition-filter").val();
+    let locationValue = $("#location-filter").val();
 
-    for (let currentItem of ALL_ITEMS) {
-        if (matchesSearchbar(currentItem, searchText) && matchesCheckedTags(currentItem, checkedTags)) {
-            filteredItems.push(currentItem);
+    for (let item of ALL_ITEMS) {
+        if (matchesSearchConditions(item, searchText, checkedTags, conditionValue, locationValue)) {
+            filteredItems.push(item);
         }
     }
 
     renderItems(filteredItems);
 }
 
+
+function matchesSearchConditions(item, searchText, checkedTags, condition, location) {
+    return matchesSearchbar(item, searchText) && matchesCheckedTags(item, checkedTags) && matchesFilterValue(item.condition, condition) && (item.location !== undefined && matchesFilterValue(item.location.name, location));
+}
 
 /**
  * Checks whether the item matches the given search text
@@ -71,8 +86,12 @@ function matchesCheckedTags(item, checkedTags) {
         return true;
     }
 
-    const itemTags = new Set(item.tags).add(item.condition.name);
-    return checkedTags.every(x => itemTags.has(x));
+    return checkedTags.every(x => item.tags.has(x));
+}
+
+
+function matchesFilterValue(value, filterValue) {
+    return filterValue === "any" || value === filterValue;
 }
 
 
@@ -111,6 +130,12 @@ function addSearchEventListeners() {
         tag.toggleClass('selected');
         applySearch();
     });
+
+    const conditionFilter = $("#condition-filter");
+    conditionFilter.on("change", function() { applySearch(); });
+
+    const locationFilter = $("#location-filter");
+    locationFilter.on("change", function() { applySearch(); });
 }
 
 

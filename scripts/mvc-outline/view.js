@@ -36,6 +36,17 @@ function renderSearchTags(tags) {
     }
 }
 
+
+function renderSearchFilter(selectId, options) {
+    const select = $("#" + selectId);
+    console.log(select.html());
+    select.empty();
+    select.append(getDefaultOptionHTML());
+    for (let option of options) {
+        select.append(getOptionHTML(option));
+    }
+}
+
 /**
  * @param {Item}
  * @return {string} The HTML that displays an item in the database
@@ -47,7 +58,7 @@ function getItemHTML(item) {
     const imgPathFull = item.imageFull;
     const imgPathShort = item.imageThumbnail;
     const count = item.count;
-    const tagsList = [item.condition.name].concat(Array.from(item.tags).sort());
+    const tagsList = [item.condition].concat(Array.from(item.tags).sort());
 
     let tagsHtml = "";
     tagsList.forEach(tagName => {tagsHtml += `<li>${tagName}</li>`;});
@@ -103,6 +114,17 @@ function getSearchTagHTML(tagName) {
             <input hidden type="checkbox" name="${tagName}" id="${tagId}"/>
             <p>${tagName}</p>
         </div>`;
+}
+
+
+function getOptionHTML(option) {
+    return `
+        <option value="${option.name}">${option.name}</option>
+        `
+}
+
+function getDefaultOptionHTML() {
+    return "<option selected value='any'>-- Any --</option>";
 }
 
 

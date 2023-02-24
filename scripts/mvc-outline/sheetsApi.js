@@ -55,7 +55,6 @@ async function fetchSpreadsheetData(sheetName = "Main") {
     }
 
     const range = response.result;
-    console.log(range)
     if (!range || !range.values || range.values.length == 0) {
         console.log("no values found");
         return;
@@ -67,7 +66,7 @@ async function fetchSpreadsheetData(sheetName = "Main") {
     // Remove empty rows and return a list of Maps not including the header row
     let rows = range['values']
         .filter(row => row[0] !== '')
-        .map((row, index) => createRowMap(row, headers).set("id", index))
+        .map((row, index) => createRowMap(row, headers).set("id", index + 1))
         .slice(1);
 
     console.log("headers: ");

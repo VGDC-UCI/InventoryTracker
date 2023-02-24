@@ -89,33 +89,32 @@ function getInventoryData(spreadsheetData, locations) {
         if (isVisible(spreadsheetData[i])) {
             let currentItem = convertToItem(spreadsheetData[i], locations);
             items.push(currentItem);
-            if (currentItem.condition !== null) {
-                conditionTags.set(currentItem.condition.id, currentItem.condition.name);
-            }
-            currentItem.tags.forEach(currentTag => itemTags.add(currentTag));
+            currentItem.tags.forEach(tag => itemTags.add(tag));
         }
     }
 
-    // Sort condition tags by id number and return only the name of the tag
-    conditionTags = Array.from(
-        [...conditionTags.entries()]
-        .sort(function (e1, e2) { return e1[0] - e2[0]; })
-        .map(function (e) { return e[1]; })
-    );
+    // // Sort condition tags by id number and return only the name of the tag
+    // conditionTags = Array.from(
+    //     [...conditionTags.entries()]
+    //     .sort(function (e1, e2) { return e1[0] - e2[0]; })
+    //     .map(function (e) { return e[1]; })
+    // );
+
+    // sort item tags alphabetically
     itemTags = Array.from(itemTags)
         .sort(function (t1, t2) { return t1.toLowerCase().localeCompare(t2.toLowerCase()); });
 
-    // sort items by name
+    // sort items alphabetically by name
     items.sort((item1, item2) => item1.name.localeCompare(item2.name));
-
 
     const InventoryDataObject = {
         items: items,
-        tags: conditionTags.concat(itemTags)
+        tags: itemTags
     };
     console.log(InventoryDataObject);
     return InventoryDataObject;
 }
+
 
 /**
  * @param {Map<string, string>[]} spreadsheetData
@@ -147,7 +146,7 @@ function convertToItem(spreadsheetRow, locations) {
     currentItem.imageThumbnail  = convertGoogleDriveLink(spreadsheetRow.get('photo'));
     currentItem.imageFull       = convertGoogleDriveLink(spreadsheetRow.get('photo'));
     currentItem.keywords        = spreadsheetRow.get('name'); // TODO:Implement or remove keywords
-    currentItem.condition       = getItemCondition(spreadsheetRow.get('condition'));
+    currentItem.condition       = spreadsheetRow.get('condition');
     return currentItem;
 }
 
@@ -166,29 +165,28 @@ function convertToLocation(spreadsheetRow) {
 }
 
 
-/**
- * @param {string} conditionStr The full condtion str from the spreadsheet
- * @return {Condition} A Condition object, or null if object could not be created successfully
- */
-function getItemCondition(conditionStr) {
-    const conditionArray = conditionStr.split(" - ");
-    if (conditionArray.length != 2) {
-        return null;
-    }
+// /**
+//  * @param {string} conditionStr The full condtion str from the spreadsheet
+//  * @return {Condition} A Condition object, or null if object could not be created successfully
+//  */
+// function getItemCondition(conditionStr) {
+//     const conditionArray = conditionStr.split(" - ");
+//     if (conditionArray.length != 2) {
+//         return null;
+//     }
 
-    const id = parseInt(conditionArray[0].trim());
-    const name = conditionArray[1].trim();
+//     const id = parseInt(conditionArray[0].trim());
+//     const name = conditionArray[1].trim();
 
-    if (isNaN(id) || name === "") {
-        return null;
-    }
+//     if (isNaN(id) || name === "") {
+//         return null;
+//     }
 
-    const condition = new Condition();
-    condition.id = id;
-    condition.name = name;
-    return condition;
-}
-
+//     const condition = new Condition();
+//     condition.id = id;
+//     condition.name = name;
+//     return condition;
+// }
 
 function convertGoogleDriveLink(link) {
     // if (!link.includes("https://drive.google.com/")) {
