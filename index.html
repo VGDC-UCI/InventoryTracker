@@ -48,17 +48,7 @@
 		<form action="" id="controls" class="controls">
 			<div class="searchbar">
 				<p class="control-header">Includes</p>
-				<input type="text" name="searchbar" id="searchbar">
-			</div>
-
-			<div>
-				<p class="control-header">Condition</p>
-				<select id="condition-filter"></select>
-			</div>
-
-			<div>
-				<p class="control-header">Location</p>
-				<select id="location-filter"></select>
+				<input type="text" name="searchbar" id="searchbar" placeholder="title, tag, or description" class="input-box">
 			</div>
 
 			<div class="tag-filter">
@@ -66,6 +56,16 @@
 				<div class="tag-filter-list">
 					<!-- Tags for search purposes -->
 				</div>
+			</div>
+
+			<div class="condition-filter">
+				<p class="control-header">Condition</p>
+				<select id="condition-filter" class="input-box"></select>
+			</div>
+
+			<div class="location-filter">
+				<p class="control-header">Location</p>
+				<select id="location-filter" class="input-box"></select>
 			</div>
 
 			<div class="total-count">
