@@ -9,6 +9,8 @@ const ALL_CONDITIONS = [
     {id: 3, name: "✨ Unopened"}
 ];
 
+const LOCATION_FILTER_ID = "#location-filter";
+const CONDITION_FILTER_ID = "#condition-filter";
 
 /**
  * Call this function when the google api script loads.
@@ -17,15 +19,18 @@ function onGapiLoaded() {
     loadGapi(async function() {
         let locationSpreadsheetData = await fetchSpreadsheetData('Locations');
         let itemSpreadsheetData = await fetchSpreadsheetData();
+
         ALL_LOCATIONS = getLocationData(locationSpreadsheetData);
         let inventoryData = getInventoryData(itemSpreadsheetData, ALL_LOCATIONS);
-
-        console.log(ALL_LOCATIONS);
         ALL_ITEMS = inventoryData.items;
         ALL_TAGS = inventoryData.tags;
+
+        sortFilterById(ALL_LOCATIONS);
+        sortFilterById(ALL_CONDITIONS);
+
         renderSearchTags(ALL_TAGS);
-        renderSearchFilter("condition-filter", ALL_CONDITIONS);
-        renderSearchFilter("location-filter", ALL_LOCATIONS);
+        renderSearchFilter(LOCATION_FILTER_ID, ALL_LOCATIONS);
+        renderSearchFilter(CONDITION_FILTER_ID, ALL_CONDITIONS);
         addSearchEventListeners();
         renderItems(ALL_ITEMS);
     })
@@ -37,8 +42,8 @@ function applySearch() {
     console.log("Searching...");
     let searchText = getSearchText();
     let checkedTags = getCheckedTags();
-    let conditionValue = $("#condition-filter").val();
-    let locationValue = $("#location-filter").val();
+    let conditionValue = $(CONDITION_FILTER_ID).val();
+    let locationValue = $(LOCATION_FILTER_ID).val();
 
     for (let item of ALL_ITEMS) {
         if (matchesSearchConditions(item, searchText, checkedTags, conditionValue, locationValue)) {
@@ -133,11 +138,20 @@ function addSearchEventListeners() {
         applySearch();
     });
 
-    const conditionFilter = $("#condition-filter");
+    const conditionFilter = $(CONDITION_FILTER_ID);
     conditionFilter.on("change", function() { applySearch(); });
 
-    const locationFilter = $("#location-filter");
+    const locationFilter = $(LOCATION_FILTER_ID);
     locationFilter.on("change", function() { applySearch(); });
+}
+
+
+/**
+ * Sorts a list of filter objects by id. Each filter object has a name and and id field.
+ * @param {Object[]} filter
+ */
+function sortFilterById(filter) {
+    filter.sort((f1, f2) => f1.id - f2.id);
 }
 
 

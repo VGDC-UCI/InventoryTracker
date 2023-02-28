@@ -39,7 +39,7 @@ function renderSearchTags(tags) {
 
 
 function renderSearchFilter(selectId, options) {
-    const select = $("#" + selectId);
+    const select = $(selectId);
     console.log(select.html());
     select.empty();
     select.append(getDefaultOptionHTML());
@@ -60,17 +60,12 @@ function getItemHTML(item) {
     const imgPathFull = item.imageFull;
     const imgPathShort = item.imageThumbnail;
 
-    let locName = "Unspecified";
-    let locTooltip = "Ask an officer where this item can be found!";
-    let locImg = "";
-    if (item.location) {
-        locName = item.location.displayName;
-        locTooltip = item.location.description;
-        locImg = item.location.photo;
-    }
+    const locName = item.location.displayName;
+    const locTooltip = item.location.description;
+    const locImg = item.location.photo;
     const locHref = locImg ? `href=\"${locImg}\"` : "";
-
-    const count = item.count;
+    
+    const count = item.count === "" ? "" : "x" + item.count;
     const tagsList = [item.condition].concat(Array.from(item.tags).sort());
 
     let tagsHtml = "";

@@ -1,5 +1,34 @@
 "use strict"
 
+//  Column Name Constants
+const ROW_ID = "id";
+const ITEM_STATUS = "status";
+const ITEM_BORROWED = "[bor.]";
+const ITEM_VALID = "[v]";
+const ITEM_VISIBLE = "[visible]";
+const ITEM_NAME = "name";
+const ITEM_PHOTO = "photo";
+const ITEM_COUNT = "count";
+const ITEM_LOCATION = "location";
+const ITEM_TAGS = "tags";
+const ITEM_SUBTITLE = "subtitle";
+const ITEM_DESCRIPTION = "description";
+const ITEM_CONDITION = "condition";
+const ITEM_CHECKED_OUT = "[checked-out]";
+const LOCATION_NAME = "location name";
+const LOCATION_DISPLAY = "display name";
+const LOCATION_PHOTO = "photo link";
+const LOCATION_DESCRIPTION = "location description";
+
+// Unspecified Location Object
+const UNSPECIFIED_LOCATION = {
+    id: 1000,
+    name: "❓ Unspecified",
+    displayName: "Unspecified",
+    photo: null,
+    description: "Ask an officer where this item can be found!"
+}
+
 /**
  * Defines the properties of an Item object
  * @typedef     {Object}    Item
@@ -69,21 +98,7 @@ function Location() {
  * @returns {InventoryData}
  */
 function getInventoryData(spreadsheetData, locations) {
-    /*
-    //         0:      Name                "Name"                          Note: Self-explanatory
-    //         1:      Photo               "Google Drive URL"              Note: Should find another way instead of using a link that may change
-    //         2:      Quantity            "0" or more                     Note: Should avoid negative count
-    //         3:      Location            "1 - Cubby"                     Note: Check Sheets for alternatives
-    //         4:      Tags                "Game, Multiplayer, Wii"        Note: Delimited by ','
-    //         5:      Subtitle            "PC/Desktop"                    Note: Empty fields possible
-    //         6:      Description         "Missing the Disc"              Note: Empty fields possible
-    //         7:      Condition           "1 - Poor"                      Note: At the moment, only 1, 2, 3 possible
-    //         8:      Officer Notes       "Find disc"                     Note: Notes
-    //          */
-
-    // console.log("Getting Inventory Data")
     let items = [];
-    let conditionTags = new Map();
     let itemTags = new Set();
 
     for (let i = 0; i < spreadsheetData.length; i++) {
@@ -97,13 +112,6 @@ function getInventoryData(spreadsheetData, locations) {
             });
         }
     }
-
-    // // Sort condition tags by id number and return only the name of the tag
-    // conditionTags = Array.from(
-    //     [...conditionTags.entries()]
-    //     .sort(function (e1, e2) { return e1[0] - e2[0]; })
-    //     .map(function (e) { return e[1]; })
-    // );
 
     // sort item tags alphabetically
     itemTags = Array.from(itemTags)
@@ -126,7 +134,7 @@ function getInventoryData(spreadsheetData, locations) {
  * @return {Location[]}
  */
 function getLocationData(spreadsheetData) {
-    let locations = [];
+    let locations = [UNSPECIFIED_LOCATION];
 
     for (let i = 0; i < spreadsheetData.length; i++) {
         let location = convertToLocation(spreadsheetData[i]);
@@ -142,15 +150,15 @@ function getLocationData(spreadsheetData) {
  */
 function convertToItem(spreadsheetRow, locations) {
     const currentItem = new Item();
-    currentItem.name            = spreadsheetRow.get('name');
-    currentItem.subtitle        = spreadsheetRow.get('subtitle');
-    currentItem.description     = spreadsheetRow.get('description');
-    currentItem.count           = spreadsheetRow.get('count');
-    currentItem.location        = locations.find(l => l.name === spreadsheetRow.get('location'));
-    currentItem.tags            = new Set(spreadsheetRow.get('tags').split(", "));
-    currentItem.imageThumbnail  = convertGoogleDriveLink(spreadsheetRow.get('photo'));
-    currentItem.imageFull       = convertGoogleDriveLink(spreadsheetRow.get('photo'));
-    currentItem.condition       = spreadsheetRow.get('condition');
+    currentItem.name            = spreadsheetRow.get(ITEM_NAME);
+    currentItem.subtitle        = spreadsheetRow.get(ITEM_SUBTITLE);
+    currentItem.description     = spreadsheetRow.get(ITEM_DESCRIPTION);
+    currentItem.count           = spreadsheetRow.get(ITEM_COUNT);
+    currentItem.location        = getLocationWithDefault(spreadsheetRow, locations, UNSPECIFIED_LOCATION);
+    currentItem.tags            = new Set(spreadsheetRow.get(ITEM_TAGS).split(", "));
+    currentItem.imageThumbnail  = convertGoogleDriveLink(spreadsheetRow.get(ITEM_PHOTO));
+    currentItem.imageFull       = convertGoogleDriveLink(spreadsheetRow.get(ITEM_PHOTO));
+    currentItem.condition       = spreadsheetRow.get(ITEM_CONDITION);
     return currentItem;
 }
 
@@ -161,43 +169,22 @@ function convertToItem(spreadsheetRow, locations) {
  */
 function convertToLocation(spreadsheetRow) {
     const location = new Location();
-    location.id = spreadsheetRow.get("id");
-    location.name = spreadsheetRow.get("location name");
-    location.displayName = spreadsheetRow.get("display name");
-    location.photo = convertGoogleDriveLink(spreadsheetRow.get("photo link"));
-    location.description = spreadsheetRow.get("location description");
+    location.id = spreadsheetRow.get(ROW_ID);
+    location.name = spreadsheetRow.get(LOCATION_NAME);
+    location.displayName = spreadsheetRow.get(LOCATION_DISPLAY);
+    location.photo = convertGoogleDriveLink(spreadsheetRow.get(LOCATION_PHOTO));
+    location.description = spreadsheetRow.get(LOCATION_DESCRIPTION);
     return location;
 }
 
 
-// /**
-//  * @param {string} conditionStr The full condtion str from the spreadsheet
-//  * @return {Condition} A Condition object, or null if object could not be created successfully
-//  */
-// function getItemCondition(conditionStr) {
-//     const conditionArray = conditionStr.split(" - ");
-//     if (conditionArray.length != 2) {
-//         return null;
-//     }
-
-//     const id = parseInt(conditionArray[0].trim());
-//     const name = conditionArray[1].trim();
-
-//     if (isNaN(id) || name === "") {
-//         return null;
-//     }
-
-//     const condition = new Condition();
-//     condition.id = id;
-//     condition.name = name;
-//     return condition;
-// }
-
+/**
+ * Converts a google drive link to an image link. 
+ * If the given link is not a google drive link, the same link is returned
+ * @param {string} link
+ * @return {string}
+ */
 function convertGoogleDriveLink(link) {
-    // if (!link.includes("https://drive.google.com/")) {
-    //     return `The Link: ${link} is in WRONG URL FORMAT: MUST BEGIN WITH https://drive.google.com/`;
-    // }
-
     let resultLink = "";
     if (link.includes("https://drive.google.com/file/d/")) {
         const fileID = link.match(/\/d\/(.+?)\/(?:view|edit|)?/)[1];
@@ -209,6 +196,28 @@ function convertGoogleDriveLink(link) {
 }
 
 
-function isVisible(itemSpreadsheetRow) {
-    return itemSpreadsheetRow.get('[visible]') === 'TRUE';
+/**
+ * Tries to match the location string of an item to a location name in the list of location objects
+ * If no match is found, return the default location object
+ * @param {Map<string, string>} itemSpreadsheetRow
+ * @param {Location[]} locations
+ * @param {Location} defaultLocation
+ * @return {Locaation}
+ */
+function getLocationWithDefault(itemSpreadsheetRow, locations, defaultLocation) {
+    const location = locations.find(l => l.name === itemSpreadsheetRow.get('location'))
+    return location === undefined ? defaultLocation : location;
 }
+
+
+/**
+ * Returns Whether or not the item should be included to be displayed in the database
+ * @param {Map<string, string>} itemSpreadsheetRow
+ * @return {boolean}
+ */
+function isVisible(itemSpreadsheetRow) {
+    return itemSpreadsheetRow.get('[visible]') === 'TRUE' && itemSpreadsheetRow.get("[v]") === '-';
+}
+
+
+
