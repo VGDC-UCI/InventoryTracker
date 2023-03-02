@@ -18,11 +18,55 @@
  * @param {Item[]} items A list of items to display in the database section of the website
  */
 function renderItems(items) {
-    const database = $("#database");
-    database.empty();
-    for (let item of items) {
-        database.append(getItemHTML(item));
+    const database = $('#database')
+    database.find('.item').remove();
+
+	database.masonry({
+		itemSelector: '.item',
+		columnWidth: '#database-sizer',
+        gutter: 10,
+        fitWidth: true,
+	});
+
+    let itemsHTML = "";
+    for (const item of items) {
+        itemsHTML += getItemHTML(item);
+        // const itemElement = $(getItemHTML(item));
+        // database.append(itemElement);
     }
+
+	var element = $(itemsHTML);
+    // layout Masonry after each images loaded
+    database.append(element).masonry('appended', element);
+    database.imagesLoaded().progress( function() {
+        database.masonry();
+    }); 
+
+    // var database = $("#grid").masonry({
+    //     itemSelector: ".item",
+    //     columnWidth: "#grid-sizer",
+    //     percentPosition: true
+    // });
+    // // database.find(".item").remove();
+
+    // // Set masonry Layout
+    // // database.masonry({
+    // //     itemSelector: ".item",
+    // //     columnWidth: "#database-sizer",
+    // //     percentPosition: true
+    // // });
+
+    // let itemsHTML = "";
+    // for (const item of items) {
+    //     itemsHTML += getItemHTML(item);
+    //     // const itemElement = $(getItemHTML(item));
+    //     // database.append(itemElement);
+    // }
+
+    // var itemElements = $('<div class="grid-item">Added</div><div class="grid-item">Added</div>');
+    // database.append(itemElements).masonry('appended', itemElements);
+
+    // database.append(itemElements).masonry('appended', itemElements);
     updateItemCount(items.length);
 }
 
@@ -40,7 +84,6 @@ function renderSearchTags(tags) {
 
 function renderSearchFilter(selectId, options) {
     const select = $(selectId);
-    console.log(select.html());
     select.empty();
     select.append(getDefaultOptionHTML());
     for (let option of options) {
@@ -72,7 +115,7 @@ function getItemHTML(item) {
     tagsList.forEach(tagName => { tagsHtml += `<li>${tagName}</li>`; });
 
     return `
-        <article class="item">
+        <div class="item">
             <header class="item-header">
                 <h1>${title}</h1>
                 <p>${subtitle}</p>
@@ -106,7 +149,7 @@ function getItemHTML(item) {
 
                 <div class="clearfix"></div>
             </div>
-        </article>`;
+        </div>`;
 }
 
 
@@ -152,3 +195,6 @@ function updateItemCount(numItems) {
     document.getElementsByClassName("total-count-number")[0].textContent = numItems;
     $(`#content-tooltip p`).text(`${numItems} result${numItems != 1 ? "s" : ""}`);
 }
+
+
+ 

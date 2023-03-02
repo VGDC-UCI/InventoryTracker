@@ -20,10 +20,17 @@
 	<script src="scripts/view.js"></script>
 	<script src="scripts/controller.js"></script>
 	<script src="scripts/sheetsApi.js"></script>
+
+	<!-- Google API Script-->
 	<script async defer src="https://apis.google.com/js/api.js" onload="onGapiLoaded()"></script>
 
-	<script src="https://code.jquery.com/jquery-3.6.3.min.js"
-		integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+	<!-- JQuery Script-->
+	<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+	<!-- Masonry Layout Script -->
+	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+	<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+
 </head>
 
 <body>
@@ -79,6 +86,9 @@
 
 	<div class="content-wrap">
 		<div id="database">
+			<div id="database-sizer"></div>
+			<!-- <div class="item">From HTML</div>
+			<div class="item">From HTML</div> -->
 			<!-- Item cards to display -->
 		</div>
 
@@ -91,3 +101,16 @@
 </html>
 
 </div>
+
+<script>
+	// const grid = $('#grid')
+
+	// grid.masonry({
+	// 	itemSelector: '.grid-item',
+	// 	columnWidth: '#grid-sizer',
+	// 	percentPosition: true
+	// });
+
+	// element = $('<div class="grid-item">added</div><div class="grid-item">added</div>');
+	// grid.append(element).masonry('appended', element);
+</script>
