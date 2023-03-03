@@ -23,6 +23,7 @@ body {
 	font-family: var(--font-body);
 	background-color: #e2e2e2;
 	color: var(--color-main);
+	overflow-y: scroll;
 }
 
 /* Utility */
