@@ -74,7 +74,18 @@ function matchesSearchText(item, searchText) {
         return false;
     }
 
-    return matchesSearchbar(item, searchText) || matchesDescription(item, searchText) || matchesTag(item, searchText);
+    const searchWords = searchText.split(" ");
+
+    let allWordsFound = true;
+
+    searchWords.some(function(word) {
+        if (!matchesTitle(item, word) && !matchesDescription(item, word) && !matchesTag(item, word)) {
+            allWordsFound = false;
+            return false;
+        }
+    });
+    
+    return allWordsFound;
 }
  
 
@@ -84,7 +95,7 @@ function matchesSearchText(item, searchText) {
  * @param {string} searchText
  * @return {boolean}
  */
-function matchesSearchbar(item, searchText) {
+function matchesTitle(item, searchText) {
     if (item.name.toLowerCase().includes(searchText)) {
         return true;
     } else {
@@ -113,16 +124,13 @@ function matchesDescription(item, searchText) {
  * @return {boolean}
  */
 function matchesTag(item, searchText) {
-    const searchWords = searchText.split(" ");
-    return searchWords.every(word => {
-        for (const tag of item.tags) {
-            const tagText = tag.toLowerCase().split(" ");
-            if (tagText.includes(word)) {
-                return true;
-            }
+    for (const tag of item.tags) {
+        const tagText = tag.toLowerCase().split(" ");
+        if (tagText.includes(searchText)) {
+            return true;
         }
-        return false;
-    });
+    }
+    return false;
 }
 
 /**
