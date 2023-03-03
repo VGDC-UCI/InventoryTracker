@@ -56,8 +56,27 @@ function applySearch() {
 
 
 function matchesSearchConditions(item, searchText, checkedTags, condition, location) {
-    return matchesSearchbar(item, searchText) && matchesCheckedTags(item, checkedTags) && matchesFilterValue(item.condition, condition) && (item.location !== undefined && matchesFilterValue(item.location.name, location));
+    return matchesSearchText(item, searchText) && matchesCheckedTags(item, checkedTags) && matchesFilterValue(item.condition, condition) && (item.location !== undefined && matchesFilterValue(item.location.name, location));
 }
+
+/**
+ * Checks whether the item's title, description, or tag matches the given search text
+ * @param {Item} item
+ * @param {string} searchText
+ * @return {boolean}
+ */
+function matchesSearchText(item, searchText) {
+    if (searchText.length === 0) {
+        return true;
+    }
+    
+    if (typeof (item.name) === "undefined") {
+        return false;
+    }
+
+    return matchesSearchbar(item, searchText) || matchesDescription(item, searchText) || matchesTag(item, searchText);
+}
+ 
 
 /**
  * Checks whether the item matches the given search text
@@ -66,21 +85,45 @@ function matchesSearchConditions(item, searchText, checkedTags, condition, locat
  * @return {boolean}
  */
 function matchesSearchbar(item, searchText) {
-    if (searchText.length === 0) {
+    if (item.name.toLowerCase().includes(searchText)) {
         return true;
     } else {
-        if (typeof (item.name) === "undefined") {
-			return false;
-		}
-
-        if (item.name.toLowerCase().includes(searchText)) {
-            return true;
-		} else {
-            return false;
-		}
+        return false;
     }
 }
 
+/**
+ * Checks whether the item description matches the given search text
+ * @param {Item} item
+ * @param {string} searchText
+ * @return {boolean}
+ */
+function matchesDescription(item, searchText) {
+    if (item.description.toLowerCase().includes(searchText)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Checks whether the item tag matches the given search text
+ * @param {Item} item
+ * @param {string} searchText
+ * @return {boolean}
+ */
+function matchesTag(item, searchText) {
+    const searchWords = searchText.split(" ");
+    return searchWords.every(word => {
+        for (const tag of item.tags) {
+            const tagText = tag.toLowerCase().split(" ");
+            if (tagText.includes(word)) {
+                return true;
+            }
+        }
+        return false;
+    });
+}
 
 /**
  * Checks whether the item matches with the given list of checked tags
