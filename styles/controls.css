@@ -11,7 +11,7 @@
 }
 
 .input-box {
-	border: var(--color-blue) 3.5px solid;
+	border: #dae0f4 3.5px solid;
 	border-radius: 14px;
 }
 
@@ -38,12 +38,6 @@
 
 #searchbar::placeholder {
 	opacity: 20%;
-}
-
-#searchbar:active,
-#searchbar:focus {
-	border: var(--color-dark) 3.5px solid;
-	outline-width: 0;
 }
 
 /* Tags */
@@ -156,6 +150,7 @@
 	margin-bottom: 20px;
 	background-color: var(--color-white);
 	box-shadow: var(--box-shadow-soft);
+	z-index: 1;
 }
 
 /* Tooltip After Search Results */
