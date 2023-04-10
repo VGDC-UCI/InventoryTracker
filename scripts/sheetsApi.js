@@ -1,7 +1,8 @@
 "use strict"
 
-// TODO(developer): Set to client ID and API key from the Developer Console
-const API_KEY = 'AIzaSyBPKlmo8xEo4FbWnToU9BR3OCRgEHSmdbs';
+// Restricted Public API Key from VGDC Inventory Tracker Project
+// This key can only be used to access the Sheets API on this website.
+const API_KEY = 'AIzaSyADvdZBViMHQeJjCVzYZWrCCTIQtlrYEfk';
 
 // Discovery doc URL for APIs used by the quickstart
 const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
@@ -10,7 +11,7 @@ const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
 // included, separated by spaces.
 const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 
-const SPREADSHEET_ID = '1bkOsHBlgEeVSQQWGd9n0E9ywy_K419WTP0Cqv5hd-QI';
+const SPREADSHEET_ID = '1XU4y5YP_gQC4xadFvq8Qj2gRa_G6OXOrEvs2i35oFX4';
 const RANGE = 'A1:M100000';
 
 
